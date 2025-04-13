@@ -6,9 +6,28 @@ import GameHistory from './components/GameHistory';
 import { calculateWinner, checkDraw } from './utils/gameLogic';
 
 function App() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // Game state
   const [board, setBoard] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
+
+  // fetches the current state from backend
+  useEffect(() => {
+    const fetchGameState = async () => {
+      try {
+        const response = await fetch(`${API_URL}/state`);
+        const data = await response.json();
+        setBoard(data.board);
+        setXIsNext(data.x_is_next);
+      } catch (error) {
+        console.error("Failed to fetch game state:", error);
+      }
+    };
+
+    fetchGameState();
+  }, []);
+
   const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
   const [gameHistory, setGameHistory] = useState<Array<{
     winner: string | null;
@@ -55,21 +74,29 @@ function App() {
   }, [board]);
 
   // Handle square click
-  const handleClick = (index: number) => {
+  const handleClick = async (index: number) => {
     // Return if square is filled or game is over
     if (board[index] || gameStatus !== 'playing') return;
     
-    const newBoard = [...board];
-    newBoard[index] = xIsNext ? 'X' : 'O';
-    
-    setBoard(newBoard);
-    setXIsNext(!xIsNext);
+    const response = await fetch(`${API_URL}/move/${index}`, {
+      method: 'POST',
+    });
+
+    const data = await response.json();
+    if (data.error) return; // Invalid move
+  
+    setBoard(data.board);
+    setXIsNext(data.x_is_next);
   };
 
   // Reset the game
-  const resetGame = () => {
-    setBoard(Array(9).fill(null));
-    setXIsNext(true);
+  const resetGame = async () => {
+    const response = await fetch(`${API_URL}/reset`, {
+      method: 'POST',
+    });
+    const data = await response.json();
+    setBoard(data.board);
+    setXIsNext(data.x_is_next);
     setGameStatus('playing');
     setWinningLine(null);
   };
