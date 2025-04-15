@@ -122,7 +122,7 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          push: true
+          push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:sha-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:latest
@@ -133,7 +133,7 @@ jobs:
         with:
           context: ./backend
           file: ./backend/Dockerfile
-          push: true
+          push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE }}:sha-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE }}:latest
