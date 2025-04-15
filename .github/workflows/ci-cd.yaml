@@ -126,6 +126,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:sha-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:latest
+          load: true
 
       # Backend Docker Build
       - name: Build & Push Backend Image
@@ -137,6 +138,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE }}:sha-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE }}:latest
+          load: true
 
       # Trivy Scans
       - name: Trivy Scan - Frontend
