@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/danielchang2001/devsecops-webapp-backend:sha-566956d6300dc3cbd319532ad451a8d741e6e8f1
+          image: ghcr.io/danielchang2001/devsecops-webapp-backend:sha-1695139c412866a6e5ee2781ffd0e8f2e0abed12
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
