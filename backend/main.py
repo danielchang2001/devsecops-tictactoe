@@ -34,3 +34,14 @@ def reset_game():
     game_state["board"] = [None] * 9
     game_state["x_is_next"] = True
     return game_state
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+@app.get("/api/state")
+def get_state():
+    return {
+        "state": game_state,
+        "served_by": socket.gethostname()  # shows which pod handled it
+    }

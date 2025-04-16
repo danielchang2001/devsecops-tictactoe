@@ -25,3 +25,8 @@ def test_reset_game():
     client.post("/api/move/0")
     response = client.post("/api/reset")
     assert response.json()["board"] == [None] * 9
+
+def test_health_check():
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}

@@ -16,12 +16,28 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/yourusername/tic-tac-toe:latest
+          image:  
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-          env:
-            - name: API_URL
-              value: http://tic-tac-toe-backend:8000  # service name of backend
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "512Mi"
+            requests:
+              cpu: "0.2"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
       imagePullSecrets:
         - name: github-container-registry

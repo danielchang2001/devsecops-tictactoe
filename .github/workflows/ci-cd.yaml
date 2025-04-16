@@ -102,6 +102,7 @@ jobs:
       REGISTRY: ghcr.io
       FRONTEND_IMAGE: ${{ github.repository }}-frontend
       BACKEND_IMAGE: ${{ github.repository }}-backend
+      API_URL: http://tic-tac-toe-backend:8000
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -123,6 +124,8 @@ jobs:
           context: .
           file: Dockerfile
           push: false
+          build-args: |
+            API_URL=${{ env.API_URL }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:sha-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE }}:latest
