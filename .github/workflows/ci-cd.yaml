@@ -195,8 +195,8 @@ jobs:
           FRONTEND_IMAGE: ${{ github.repository }}-frontend
           BACKEND_IMAGE: ${{ github.repository }}-backend
         run: |
-          sed -i "s|image: ${REGISTRY}/.*/frontend:.*|image: ${REGISTRY}/${FRONTEND_IMAGE}:${IMAGE_TAG}|g" kubernetes/frontend-deployment.yaml
-          sed -i "s|image: ${REGISTRY}/.*/backend:.*|image: ${REGISTRY}/${BACKEND_IMAGE}:${IMAGE_TAG}|g" kubernetes/backend-deployment.yaml
+          sed -i "s|image: ${REGISTRY}/.*|image: ${REGISTRY}/${FRONTEND_IMAGE}:${IMAGE_TAG}|g" kubernetes/frontend-deployment.yaml
+          sed -i "s|image: ${REGISTRY}/.*|image: ${REGISTRY}/${BACKEND_IMAGE}:${IMAGE_TAG}|g" kubernetes/backend-deployment.yaml
 
           echo "Updated deployment images to tag: ${IMAGE_TAG}"
 
