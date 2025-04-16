@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tic-tac-toe-frontend
+  labels:
+    app: tic-tac-toe-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tic-tac-toe-frontend
+  template:
+    metadata:
+      labels:
+        app: tic-tac-toe-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/your-username/devsecops-webapp-frontend:sha-xxxx
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_URL
+              value: http://tic-tac-toe-backend:8000  # service name of backend
+      imagePullSecrets:
+        - name: github-container-registry

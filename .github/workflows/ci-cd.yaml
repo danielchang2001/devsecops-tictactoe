@@ -117,7 +117,7 @@ jobs:
           password: ${{ secrets.TOKEN }}
 
       # Frontend Docker Build
-      - name: Build & Push Frontend Image
+      - name: Build Frontend Image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -129,7 +129,7 @@ jobs:
           load: true
 
       # Backend Docker Build
-      - name: Build & Push Backend Image
+      - name: Build Backend Image
         uses: docker/build-push-action@v5
         with:
           context: ./backend

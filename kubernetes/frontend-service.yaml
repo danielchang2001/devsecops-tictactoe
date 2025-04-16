@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tic-tac-toe-frontend
+spec:
+  selector:
+    app: tic-tac-toe-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer  # Or NodePort depending on your cluster
