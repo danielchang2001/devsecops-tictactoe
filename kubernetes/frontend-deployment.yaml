@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/danielchang2001/devsecops-webapp-frontend:sha-585b935402de7898cd362688a4d5b64d64916cf9
+          image: ghcr.io/danielchang2001/devsecops-webapp-frontend:sha-eed10e9b37e57b3d29676881ea1fb1b74bf03f0e
           imagePullPolicy: Always
           ports:
             - containerPort: 80
