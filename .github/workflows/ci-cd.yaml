@@ -107,7 +107,7 @@ jobs:
       REGISTRY: ghcr.io
       FRONTEND_IMAGE: ${{ github.repository }}-frontend
       BACKEND_IMAGE: ${{ github.repository }}-backend
-      API_URL: http://tic-tac-toe-backend:8000
+      API_URL: http://tic-tac-toe.test/api
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
