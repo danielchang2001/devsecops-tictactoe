@@ -13,10 +13,10 @@ def test_get_state():
     response = client.get("/api/state")
     assert response.status_code == 200
     data = response.json()
-    assert isinstance(data, list)
-    assert len(data) == 2
-    assert len(data[0]) == 9  # board
-    assert isinstance(data[1], bool)  # x_is_next
+    assert "board" in data
+    assert "x_is_next" in data
+    assert isinstance(data["board"], list)
+    assert isinstance(data["x_is_next"], bool)
 
 def test_make_valid_move():
     response = client.post("/api/move/0")
