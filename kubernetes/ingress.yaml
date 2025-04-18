@@ -11,14 +11,14 @@ spec:
     - host: tic-tac-toe.test
       http:
         paths:
-        - path: /frontend
+        - path: /
           pathType: Prefix
           backend:
             service:
               name: tic-tac-toe-frontend
               port:
                 number: 80
-        - path: /backend
+        - path: /api
           pathType: Prefix
           backend:
             service:
