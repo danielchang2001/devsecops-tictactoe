@@ -15,7 +15,7 @@ function App() {
   // fetches the current state from backend
   useEffect(() => {
     const fetchGameState = async () => {
-      try { 
+      try {
         const response = await fetch(`${API_URL}/state`);
         const data = await response.json();
         setBoard(data.board);

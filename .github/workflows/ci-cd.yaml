@@ -76,6 +76,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run backend unit tests
+        env:
+          REDIS_HOST: localhost
         run: |
           cd backend
           pytest main_test.py
