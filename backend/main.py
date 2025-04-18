@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # Connect to Redis (use service name inside cluster)
-redis_host = os.getenv("REDIS_HOST", "redis-service")  # update to your service name
+redis_host = os.getenv("REDIS_HOST", "redis")  # update to your service name
 r = redis.Redis(host=redis_host, port=6379, decode_responses=True)
 
 # Initialize game state in Redis if missing
