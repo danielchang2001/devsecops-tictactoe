@@ -55,6 +55,11 @@ jobs:
   unit-tests-backend:
     name: Unit Tests (Backend)
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7.2-alpine
+        ports:
+          - 6379:6379
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
