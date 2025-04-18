@@ -11,13 +11,20 @@ spec:
     - host: tic-tac-toe.test
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: tic-tac-toe-frontend
-                port:
-                  number: 80
+        - path: /frontend
+          pathType: Prefix
+          backend:
+            service:
+              name: tic-tac-toe-frontend
+              port:
+                number: 80
+        - path: /backend
+          pathType: Prefix
+          backend:
+            service:
+              name: tic-tac-toe-backend
+              port:
+                number: 8000
   # Uncomment and configure if you want TLS
   # tls:
   # - hosts:
