@@ -2,11 +2,16 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - k8s-manifests
     paths-ignore:
       - 'kubernetes/**'  # Avoid loops on manifest updates
   pull_request:
-    branches: [ main ]
+    branches: 
+      - main
+    paths-ignore:
+      - 'kubernetes/**'
 
 jobs:
   unit-tests-frontend:
