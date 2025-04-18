@@ -4,3 +4,4 @@ python-multipart
 pytest
 httpx
 setuptools>=78.1.0
+redis
