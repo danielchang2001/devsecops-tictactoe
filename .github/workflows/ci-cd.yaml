@@ -215,10 +215,8 @@ jobs:
           FRONTEND_IMAGE: ${{ github.repository }}-frontend
           BACKEND_IMAGE: ${{ github.repository }}-backend
         run: |
-          yq eval ".image.frontend.repository = \"${REGISTRY}/${FRONTEND_IMAGE}\"" -i helm-chart/tic-tac-toe/values.yaml
-          yq eval ".image.frontend.tag = \"${IMAGE_TAG}\"" -i helm-chart/tic-tac-toe/values.yaml
-          yq eval ".image.backend.repository = \"${REGISTRY}/${BACKEND_IMAGE}\"" -i helm-chart/tic-tac-toe/values.yaml
-          yq eval ".image.backend.tag = \"${IMAGE_TAG}\"" -i helm-chart/tic-tac-toe/values.yaml
+          yq eval ".frontend.image = \"${REGISTRY}/${FRONTEND_IMAGE}:${IMAGE_TAG}\"" -i helm-chart/tic-tac-toe/values.yaml
+          yq eval ".backend.image = \"${REGISTRY}/${BACKEND_IMAGE}:${IMAGE_TAG}\"" -i helm-chart/tic-tac-toe/values.yaml
 
       - name: Commit and push updated Helm values
         run: |
