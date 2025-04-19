@@ -4,16 +4,13 @@ frontend:
   containerPort: 80
   servicePort: 80
   serviceType: LoadBalancer
-
 backend:
   replicaCount: 2
   image: ghcr.io/danielchang2001/devsecops-webapp-backend:sha-eed10e9b37e57b3d29676881ea1fb1b74bf03f0e
   servicePort: 8000
   serviceType: ClusterIP
-
 ingress:
   host: tic-tac-toe.test
-
 redis:
   replicaCount: 1
   image: redis:7.2-alpine
@@ -21,3 +18,10 @@ redis:
   serviceType: ClusterIP
   servicePort: 6379
   targetPort: 6379
+image:
+  frontend:
+    repository: ghcr.io/danielchang2001/devsecops-webapp-frontend
+    tag: sha-94a9b88eb35e362839bd9d021d0130b504ef2516
+  backend:
+    repository: ghcr.io/danielchang2001/devsecops-webapp-backend
+    tag: sha-94a9b88eb35e362839bd9d021d0130b504ef2516
