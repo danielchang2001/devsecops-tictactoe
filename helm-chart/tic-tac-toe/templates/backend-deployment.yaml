@@ -1,26 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tic-tac-toe-frontend
+  name: tic-tac-toe-backend
   labels:
-    app: tic-tac-toe-frontend
+    app: tic-tac-toe-backend
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: tic-tac-toe-frontend
+      app: tic-tac-toe-backend
   template:
     metadata:
       labels:
-        app: tic-tac-toe-frontend
+        app: tic-tac-toe-backend
     spec:
       containers:
-        - name: frontend
+        - name: backend
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.containerPort }}
+          env:
+            - name: REDIS_HOST
+              value: {{ .Values.env.REDIS_HOST }}
           resources:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
@@ -30,13 +33,13 @@ spec:
               memory: {{ .Values.resources.requests.memory }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: {{ .Values.containerPort }}
             initialDelaySeconds: 30
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: {{ .Values.containerPort }}
             initialDelaySeconds: 5
             periodSeconds: 5

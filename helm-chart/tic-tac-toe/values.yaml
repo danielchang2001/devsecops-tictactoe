@@ -1,0 +1,80 @@
+replicaCount:
+  frontend: 3
+  backend: 2
+  redis: 1
+
+image:
+  frontend:
+    repository: ghcr.io/danielchang2001/devsecops-webapp-frontend
+    tag: latest
+    pullPolicy: Always
+  backend:
+    repository: ghcr.io/danielchang2001/devsecops-webapp-backend
+    tag: latest
+    pullPolicy: Always
+  redis:
+    repository: redis
+    tag: 7.2-alpine
+
+containerPort:
+  frontend: 80
+  backend: 8000
+  redis: 6379
+
+resources:
+  frontend:
+    limits:
+      cpu: "0.5"
+      memory: "512Mi"
+    requests:
+      cpu: "0.2"
+      memory: "256Mi"
+  backend:
+    limits:
+      cpu: "0.5"
+      memory: "512Mi"
+    requests:
+      cpu: "0.2"
+      memory: "256Mi"
+  redis:
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
+
+imagePullSecrets: github-container-registry
+
+env:
+  backend:
+    REDIS_HOST: redis
+
+service:
+  frontend:
+    type: LoadBalancer
+    port: 80
+    targetPort: 80
+  backend:
+    type: ClusterIP
+    port: 8000
+    targetPort: 8000
+  redis:
+    type: ClusterIP
+    port: 6379
+    targetPort: 6379
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  host: tic-tac-toe.test
+  paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        serviceName: tic-tac-toe-frontend
+        servicePort: 80
+    - path: /api
+      pathType: Prefix
+      backend:
+        serviceName: tic-tac-toe-backend
+        servicePort: 8000

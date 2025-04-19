@@ -1,0 +1,8 @@
+apiVersion: v2
+name: devsecops-webapp
+description: A Helm chart for deploying a Tic Tac Toe web app with frontend, backend, Redis, and ingress
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Daniel Chang
