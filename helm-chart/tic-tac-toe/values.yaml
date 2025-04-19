@@ -1,80 +1,23 @@
-replicaCount:
-  frontend: 3
-  backend: 2
-  redis: 1
+frontend:
+  replicaCount: 3
+  image: ghcr.io/danielchang2001/devsecops-webapp-frontend:sha-eed10e9b37e57b3d29676881ea1fb1b74bf03f0e\
+  containerPort: 80
+  servicePort: 80
+  serviceType: LoadBalancer
 
-image:
-  frontend:
-    repository: ghcr.io/danielchang2001/devsecops-webapp-frontend
-    tag: latest
-    pullPolicy: Always
-  backend:
-    repository: ghcr.io/danielchang2001/devsecops-webapp-backend
-    tag: latest
-    pullPolicy: Always
-  redis:
-    repository: redis
-    tag: 7.2-alpine
-
-containerPort:
-  frontend: 80
-  backend: 8000
-  redis: 6379
-
-resources:
-  frontend:
-    limits:
-      cpu: "0.5"
-      memory: "512Mi"
-    requests:
-      cpu: "0.2"
-      memory: "256Mi"
-  backend:
-    limits:
-      cpu: "0.5"
-      memory: "512Mi"
-    requests:
-      cpu: "0.2"
-      memory: "256Mi"
-  redis:
-    limits:
-      cpu: "250m"
-      memory: "256Mi"
-
-imagePullSecrets: github-container-registry
-
-env:
-  backend:
-    REDIS_HOST: redis
-
-service:
-  frontend:
-    type: LoadBalancer
-    port: 80
-    targetPort: 80
-  backend:
-    type: ClusterIP
-    port: 8000
-    targetPort: 8000
-  redis:
-    type: ClusterIP
-    port: 6379
-    targetPort: 6379
+backend:
+  replicaCount: 2
+  image: ghcr.io/danielchang2001/devsecops-webapp-backend:sha-eed10e9b37e57b3d29676881ea1fb1b74bf03f0e
+  servicePort: 8000
+  serviceType: ClusterIP
 
 ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    kubernetes.io/ingress.class: nginx
   host: tic-tac-toe.test
-  paths:
-    - path: /
-      pathType: Prefix
-      backend:
-        serviceName: tic-tac-toe-frontend
-        servicePort: 80
-    - path: /api
-      pathType: Prefix
-      backend:
-        serviceName: tic-tac-toe-backend
-        servicePort: 8000
+
+redis:
+  replicaCount: 1
+  image: redis:7.2-alpine
+  containerPort: 6379
+  serviceType: ClusterIP
+  servicePort: 6379
+  targetPort: 6379

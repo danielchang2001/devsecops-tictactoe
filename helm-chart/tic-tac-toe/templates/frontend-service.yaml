@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.name }}
+  name: tic-tac-toe-frontend
 spec:
   selector:
-    app: {{ .Values.app.name }}
+    app: tic-tac-toe-frontend
   ports:
     - protocol: TCP
-      port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
-  type: {{ .Values.service.type }}  # LoadBalancer or NodePort
+      port: {{ .Values.frontend.servicePort }}
+      targetPort: {{ .Values.frontend.servicePort }}
+  type: {{ .Values.frontend.serviceType }}

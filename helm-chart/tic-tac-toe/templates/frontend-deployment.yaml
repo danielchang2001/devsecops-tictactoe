@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tic-tac-toe-frontend
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.frontend.replicaCount }}
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -17,28 +17,28 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ .Values.frontend.image }}
+          imagePullPolicy: Always
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - containerPort: {{ .Values.frontend.containerPort }}
           resources:
             limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+              cpu: "0.5"
+              memory: "512Mi"
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+              cpu: "0.2"
+              memory: "256Mi"
           livenessProbe:
             httpGet:
               path: /
-              port: {{ .Values.containerPort }}
+              port: {{ .Values.frontend.containerPort }}
             initialDelaySeconds: 30
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /
-              port: {{ .Values.containerPort }}
+              port: {{ .Values.frontend.containerPort }}
             initialDelaySeconds: 5
             periodSeconds: 5
       imagePullSecrets:
-        - name: {{ .Values.imagePullSecrets }}
+        - name: github-container-registry
