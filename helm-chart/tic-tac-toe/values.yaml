@@ -21,7 +21,7 @@ redis:
 image:
   frontend:
     repository: ghcr.io/danielchang2001/devsecops-webapp-frontend
-    tag: sha-94a9b88eb35e362839bd9d021d0130b504ef2516
+    tag: sha-a73b6f4fa70b025c4bbc4ac457a3e408d517d1ef
   backend:
     repository: ghcr.io/danielchang2001/devsecops-webapp-backend
-    tag: sha-94a9b88eb35e362839bd9d021d0130b504ef2516
+    tag: sha-a73b6f4fa70b025c4bbc4ac457a3e408d517d1ef
