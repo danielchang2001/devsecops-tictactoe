@@ -26,7 +26,7 @@ function App() {
     };
 
     fetchGameState();
-  }, []);
+  }, [API_URL]);
 
   const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
   const [gameHistory, setGameHistory] = useState<Array<{
