@@ -1,5 +1,5 @@
-# 🧱 Build Stage
-FROM python:3.11-slim as builder
+# Build Stage
+FROM python:3.11-slim-bookworm as builder
 
 WORKDIR /app
 
@@ -12,8 +12,8 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# 🏃 Final Runtime Stage
-FROM python:3.11-slim
+# Final Runtime Stage
+FROM python:3.11-slim-bookworm
 
 WORKDIR /app
 

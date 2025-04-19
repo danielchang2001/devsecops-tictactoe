@@ -3,5 +3,5 @@ uvicorn
 python-multipart
 pytest
 httpx
-setuptools>=78.1.0
+setuptools>=70.0.0
 redis
