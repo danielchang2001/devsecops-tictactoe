@@ -7,7 +7,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
-from starlette.responses import Response
+from fastapi.responses import Response as FastAPIResponse
 
 app = FastAPI()
 
@@ -113,7 +113,12 @@ def api_get_state():
 # POST make a move
 @app.post("/api/move/{index}")
 def make_move(index: int):
+    if index < 0 or index >= 9:
+        invalid_moves.inc()
+        return {"error": "Invalid move"}
+
     board, x_is_next = get_state()
+
     if board[index] is not None:
         invalid_moves.inc()
         return {"error": "Invalid move"}
@@ -195,16 +200,18 @@ def reset_game(payload: ResetRequest):
     game_resets.inc()
     save_state([None] * 9, True)
 
+    response = {
+        "board": [None] * 9,
+        "x_is_next": True
+    }
+
     if payload.reset_stats:
         save_scores({"X": 0, "O": 0, "draws": 0})
         save_history([])
+        response["scores"] = get_scores()
+        response["history"] = get_history()
 
-    return {
-        "board": [None] * 9,
-        "x_is_next": True,
-        "scores": get_scores(),
-        "history": get_history()
-    }
+    return response
 
 # Health check endpoint
 @app.get("/health")
@@ -214,4 +221,8 @@ def health_check():
 # Prometheus metrics endpoint
 @app.get("/metrics")
 def metrics():
-    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+    return FastAPIResponse(
+        generate_latest(),
+        media_type=CONTENT_TYPE_LATEST,
+        headers={"Cache-Control": "no-store"}
+    )
