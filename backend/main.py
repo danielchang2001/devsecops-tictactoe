@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import redis
 import json
 import os
+from datetime import datetime
+from pydantic import BaseModel
 
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 from starlette.responses import Response
@@ -45,6 +47,22 @@ def get_state():
 def save_state(board, x_is_next):
     r.set("board", json.dumps(board))
     r.set("x_is_next", json.dumps(x_is_next))
+
+def get_scores():
+    if r.exists("scores"):
+        return json.loads(r.get("scores"))
+    return {"X": 0, "O": 0, "draws": 0}
+
+def save_scores(scores):
+    r.set("scores", json.dumps(scores))
+
+def get_history():
+    if r.exists("history"):
+        return json.loads(r.get("history"))
+    return []
+
+def save_history(history):
+    r.set("history", json.dumps(history))
 
 def calculate_winner(board):
     # All winning line combinations
@@ -109,6 +127,19 @@ def make_move(index: int):
     if result:
         games_played.inc()
         winner = result["winner"]
+
+        scores = get_scores()
+        scores[winner] += 1
+        save_scores(scores)
+
+        history = get_history()
+        history.append({
+            "winner": winner,
+            "board": board,
+            "timestamp": str(datetime.utcnow())
+        })
+        save_history(history)
+
         if winner == "X":
             x_wins.inc()
         elif winner == "O":
@@ -123,6 +154,19 @@ def make_move(index: int):
 
     if check_draw(board):
         games_played.inc()
+
+        scores = get_scores()
+        scores["draws"] += 1
+        save_scores(scores)
+
+        history = get_history()
+        history.append({
+            "winner": None,
+            "board": board,
+            "timestamp": str(datetime.utcnow())
+        })
+        save_history(history)
+
         return {
             "board": board,
             "x_is_next": x_is_next,
@@ -135,12 +179,32 @@ def make_move(index: int):
         "status": "playing"
     }
 
-# POST reset game
+@app.get("/api/scores")
+def get_score_data():
+    return get_scores()
+
+@app.get("/api/history")
+def get_game_history():
+    return get_history()
+
+class ResetRequest(BaseModel):
+    reset_stats: bool = False
+
 @app.post("/api/reset")
-def reset_game():
+def reset_game(payload: ResetRequest):
     game_resets.inc()
     save_state([None] * 9, True)
-    return {"board": [None] * 9, "x_is_next": True}
+
+    if payload.reset_stats:
+        save_scores({"X": 0, "O": 0, "draws": 0})
+        save_history([])
+
+    return {
+        "board": [None] * 9,
+        "x_is_next": True,
+        "scores": get_scores(),
+        "history": get_history()
+    }
 
 # Health check endpoint
 @app.get("/health")

@@ -32,10 +32,13 @@ def test_make_invalid_move():
 
 def test_reset_game():
     client.post("/api/move/0")  # Make a move
-    response = client.post("/api/reset")
+    response = client.post("/api/reset", json={"reset_stats": True})
     data = response.json()
+    assert response.status_code == 200
     assert data["board"] == [None] * 9
-    assert data["x_is_next"] == True
+    assert data["x_is_next"] is True
+    assert data["scores"] == {"X": 0, "O": 0, "draws": 0}
+    assert data["history"] == []
 
 def test_win_scenario():
     # X -> 0, O -> 3, X -> 1, O -> 4, X -> 2 (X wins)

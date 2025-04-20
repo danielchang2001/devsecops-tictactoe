@@ -38,42 +38,68 @@ function App() {
     fetchGameState();
   }, [API_URL]);
 
-  // Handle square click
-  const handleClick = async (index: number) => {
-    // Return if square is filled or game is over
-    if (board[index] || gameStatus !== 'playing') return;
-    
-    const response = await fetch(`${API_URL}/move/${index}`, {
-      method: 'POST',
-    });
-
-    const data = await response.json();
-    if (data.error) return; // Invalid move
+  useEffect(() => {
+    const fetchScores = async () => {
+      const response = await fetch(`${API_URL}/scores`);
+      const data = await response.json();
+      setScores(data);
+    };
+    fetchScores();
+  }, [API_URL]);
   
-    setBoard(data.board);
-    setXIsNext(data.x_is_next);
-    setGameStatus(data.status); // Use backend-provided status
-    setWinningLine(data.winning_line || null);
-    setWinner(data.winner || null);
+  useEffect(() => {
+    const fetchHistory = async () => {
+      const response = await fetch(`${API_URL}/history`);
+      const data = await response.json();
+      setGameHistory(data);
+    };
+    fetchHistory();
+  }, [API_URL]);
 
-    if (data.status === 'won' && data.winner) {
-      setScores(prev => ({
-        ...prev,
-        [data.winner]: prev[data.winner as keyof typeof prev] + 1,
-      }));
-      setGameHistory(prev => [...prev, { winner: data.winner, board: [...data.board], date: new Date() }]);
-    } else if (data.status === 'draw') {
-      setScores(prev => ({ ...prev, draws: prev.draws + 1 }));
-      setGameHistory(prev => [...prev, { winner: null, board: [...data.board], date: new Date() }]);
+  // Click a square
+  const handleClick = async (index: number) => {
+    if (board[index] || gameStatus !== 'playing') return;
+  
+    try {
+      const response = await fetch(`${API_URL}/move/${index}`, {
+        method: 'POST',
+      });
+  
+      const data = await response.json();
+      if (data.error) return;
+  
+      setBoard(data.board);
+      setXIsNext(data.x_is_next);
+      setGameStatus(data.status);
+      setWinningLine(data.winning_line || null);
+      setWinner(data.winner || null);
+  
+      // Always pull fresh stats/history from backend
+      if (data.status === 'won' || data.status === 'draw') {
+        const [scoresRes, historyRes] = await Promise.all([
+          fetch(`${API_URL}/scores`),
+          fetch(`${API_URL}/history`)
+        ]);
+  
+        const scoresData = await scoresRes.json();
+        const historyData = await historyRes.json();
+  
+        setScores(scoresData);
+        setGameHistory(historyData);
+      }
+  
+    } catch (error) {
+      console.error("Move failed:", error);
     }
-
-  };
+  };  
 
   // Reset the game
   const resetGame = async () => {
     try {
       const response = await fetch(`${API_URL}/reset`, {
         method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reset_stats: false })
       });
       const data = await response.json();
       setBoard(data.board);
@@ -86,13 +112,26 @@ function App() {
     }
   };
 
-  // Reset all stats
-  const resetStats = async () => {
-    await resetGame();
-    setScores({ X: 0, O: 0, draws: 0 });
-    setGameHistory([]);
+  const resetAll = async () => {
+    try {
+      const response = await fetch(`${API_URL}/reset`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reset_stats: true })
+      });
+      const data = await response.json();
+      setBoard(data.board);
+      setXIsNext(data.x_is_next);
+      setGameStatus("playing");
+      setWinningLine(null);
+      setWinner(null);
+      setScores(data.scores);
+      setGameHistory(data.history);
+    } catch (error) {
+      console.error("Failed to reset stats:", error);
+    }
   };
-
+  
   // Get current game status message
   const getStatusMessage = () => {
     if (gameStatus === 'won' && winner) {
@@ -137,7 +176,7 @@ function App() {
                 New Game
               </button>
               <button 
-                onClick={resetStats}
+                onClick={resetAll}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors"
               >
                 Reset All
