@@ -51,11 +51,14 @@ def test_win_scenario():
     assert "winning_line" in data
 
 def test_draw_scenario():
-    # Reset the game before starting
     client.post("/api/reset")
 
-    # Sequence of moves that results in a draw (no winner)
-    moves = [0, 1, 2, 4, 3, 5, 6, 7, 8]
+    # Sequence of moves that ends in a draw
+    # Board:
+    #  X | O | X
+    #  O | O | X
+    #  X | X | O
+    moves = [0, 1, 2, 3, 5, 4, 6, 8, 7]
 
     for i, move in enumerate(moves):
         response = client.post(f"/api/move/{move}")
