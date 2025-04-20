@@ -5,18 +5,18 @@ interface GameHistoryProps {
   history: Array<{
     winner: string | null;
     board: Array<string | null>;
-    date: Date;
+    timestamp: string;
   }>;
 }
 
 const GameHistory: React.FC<GameHistoryProps> = ({ history }) => {
   // Format date to a readable string
-  const formatDate = (date: Date) => {
+  const formatDate = (timestamp: string) => {
     return new Intl.DateTimeFormat('en-US', {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-    }).format(date);
+    }).format(new Date(timestamp));
   };
 
   // Get result text based on winner
@@ -53,7 +53,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ history }) => {
                 </span>
                 <span className="text-gray-500 flex items-center gap-1">
                   <Clock className="h-3 w-3" />
-                  {formatDate(game.date)}
+                  {formatDate(game.timestamp)}
                 </span>
               </div>
             </div>

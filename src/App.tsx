@@ -15,7 +15,7 @@ function App() {
   const [gameHistory, setGameHistory] = useState<Array<{
     winner: string | null;
     board: Array<string | null>;
-    date: Date;
+    timestamp: string;
   }>>([]);
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw'>('playing');
   const [winningLine, setWinningLine] = useState<number[] | null>(null);
