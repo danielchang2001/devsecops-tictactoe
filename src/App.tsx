@@ -28,6 +28,9 @@ function App() {
         const data = await response.json();
         setBoard(data.board);
         setXIsNext(data.x_is_next);
+        setGameStatus(data.status);
+        setWinner(data.winner || null);
+        setWinningLine(data.winning_line || null);
       } catch (error) {
         console.error("Failed to fetch game state:", error);
       }

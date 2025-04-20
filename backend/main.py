@@ -69,7 +69,28 @@ def check_draw(board):
 @app.get("/api/state")
 def api_get_state():
     board, x_is_next = get_state()
-    return {"board": board, "x_is_next": x_is_next}
+    result = calculate_winner(board)
+    
+    if result:
+        return {
+            "board": board,
+            "x_is_next": x_is_next,
+            "status": "won",
+            "winner": result["winner"],
+            "winning_line": result["line"]
+        }
+    elif check_draw(board):
+        return {
+            "board": board,
+            "x_is_next": x_is_next,
+            "status": "draw"
+        }
+    else:
+        return {
+            "board": board,
+            "x_is_next": x_is_next,
+            "status": "playing"
+        }
 
 # POST make a move
 @app.post("/api/move/{index}")
