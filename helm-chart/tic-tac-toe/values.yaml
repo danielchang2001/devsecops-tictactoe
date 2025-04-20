@@ -1,12 +1,12 @@
 frontend:
   replicaCount: 3
-  image: ghcr.io/danielchang2001/devsecops-webapp-frontend:sha-c54e2419e18c3c02af8bc87e033e75448a6f1dcc
+  image: ghcr.io/danielchang2001/devsecops-webapp-frontend:sha-75bcf3a2e10086de2960021b45eecf72a2b901fe
   containerPort: 80
   servicePort: 80
   serviceType: LoadBalancer
 backend:
   replicaCount: 2
-  image: ghcr.io/danielchang2001/devsecops-webapp-backend:sha-c54e2419e18c3c02af8bc87e033e75448a6f1dcc
+  image: ghcr.io/danielchang2001/devsecops-webapp-backend:sha-75bcf3a2e10086de2960021b45eecf72a2b901fe
   servicePort: 8000
   serviceType: ClusterIP
 ingress:
