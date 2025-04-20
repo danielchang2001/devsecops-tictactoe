@@ -3,7 +3,6 @@ import { RefreshCw, Award } from 'lucide-react';
 import Board from './components/Board';
 import ScoreBoard from './components/ScoreBoard';
 import GameHistory from './components/GameHistory';
-import { calculateWinner, checkDraw } from './utils/gameLogic';
 
 function App() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -11,6 +10,15 @@ function App() {
   // Game state
   const [board, setBoard] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
+  const [gameHistory, setGameHistory] = useState<Array<{
+    winner: string | null;
+    board: Array<string | null>;
+    date: Date;
+  }>>([]);
+  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw'>('playing');
+  const [winningLine, setWinningLine] = useState<number[] | null>(null);
 
   // fetches the current state from backend
   useEffect(() => {
@@ -24,54 +32,8 @@ function App() {
         console.error("Failed to fetch game state:", error);
       }
     };
-
     fetchGameState();
   }, [API_URL]);
-
-  const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
-  const [gameHistory, setGameHistory] = useState<Array<{
-    winner: string | null;
-    board: Array<string | null>;
-    date: Date;
-  }>>([]);
-  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw'>('playing');
-  const [winningLine, setWinningLine] = useState<number[] | null>(null);
-
-  // Check for winner or draw
-  useEffect(() => {
-    const result = calculateWinner(board);
-    
-    if (result) {
-      setGameStatus('won');
-      setWinningLine(result.line);
-      
-      // Update scores
-      setScores(prevScores => ({
-        ...prevScores,
-        [result.winner]: prevScores[result.winner as keyof typeof prevScores] + 1
-      }));
-      
-      // Add to history
-      setGameHistory(prev => [
-        ...prev, 
-        { winner: result.winner, board: [...board], date: new Date() }
-      ]);
-    } else if (checkDraw(board)) {
-      setGameStatus('draw');
-      
-      // Update draw count
-      setScores(prevScores => ({
-        ...prevScores,
-        draws: prevScores.draws + 1
-      }));
-      
-      // Add to history
-      setGameHistory(prev => [
-        ...prev, 
-        { winner: null, board: [...board], date: new Date() }
-      ]);
-    }
-  }, [board]);
 
   // Handle square click
   const handleClick = async (index: number) => {
@@ -87,31 +49,50 @@ function App() {
   
     setBoard(data.board);
     setXIsNext(data.x_is_next);
+    setGameStatus(data.status); // Use backend-provided status
+    setWinningLine(data.winning_line || null);
+    setWinner(data.winner || null);
+
+    if (data.status === 'won' && data.winner) {
+      setScores(prev => ({
+        ...prev,
+        [data.winner]: prev[data.winner as keyof typeof prev] + 1,
+      }));
+      setGameHistory(prev => [...prev, { winner: data.winner, board: [...data.board], date: new Date() }]);
+    } else if (data.status === 'draw') {
+      setScores(prev => ({ ...prev, draws: prev.draws + 1 }));
+      setGameHistory(prev => [...prev, { winner: null, board: [...data.board], date: new Date() }]);
+    }
+
   };
 
   // Reset the game
   const resetGame = async () => {
-    const response = await fetch(`${API_URL}/reset`, {
-      method: 'POST',
-    });
-    const data = await response.json();
-    setBoard(data.board);
-    setXIsNext(data.x_is_next);
-    setGameStatus('playing');
-    setWinningLine(null);
+    try {
+      const response = await fetch(`${API_URL}/reset`, {
+        method: 'POST',
+      });
+      const data = await response.json();
+      setBoard(data.board);
+      setXIsNext(data.x_is_next);
+      setGameStatus('playing');
+      setWinningLine(null);
+      setWinner(null);
+    } catch (error) {
+      console.error("Failed to reset game:", error);
+    }
   };
 
   // Reset all stats
-  const resetStats = () => {
-    resetGame();
+  const resetStats = async () => {
+    await resetGame();
     setScores({ X: 0, O: 0, draws: 0 });
     setGameHistory([]);
   };
 
   // Get current game status message
   const getStatusMessage = () => {
-    if (gameStatus === 'won') {
-      const winner = !xIsNext ? 'X' : 'O';
+    if (gameStatus === 'won' && winner) {
       return `Player ${winner} wins!`;
     } else if (gameStatus === 'draw') {
       return "It's a draw!";
