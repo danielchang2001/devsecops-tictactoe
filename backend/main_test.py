@@ -51,17 +51,18 @@ def test_win_scenario():
     assert "winning_line" in data
 
 def test_draw_scenario():
-    # Board: X O X | X O O | O X X (no winner)
+    # Reset the game before starting
     client.post("/api/reset")
+
+    # Sequence of moves that results in a draw (no winner)
     moves = [0, 1, 2, 4, 3, 5, 6, 7, 8]
-    for move in moves:
-        client.post(f"/api/move/{move}")
-    response = client.get("/api/state")
-    assert response.status_code == 200
-    last_move = client.post("/api/move/8")
-    assert last_move.status_code == 200
-    data = last_move.json()
-    assert data["status"] == "draw"
+
+    for i, move in enumerate(moves):
+        response = client.post(f"/api/move/{move}")
+        assert response.status_code == 200
+        if i == len(moves) - 1:
+            data = response.json()
+            assert data["status"] == "draw"
 
 def test_health_check():
     response = client.get("/health")
