@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: tic-tac-toe.test
+    - host: tic-tac-toe.local
       http:
         paths:
         - path: /

@@ -6,7 +6,8 @@ spec:
   selector:
     app: tic-tac-toe-backend
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: {{ .Values.backend.servicePort }}
       targetPort: {{ .Values.backend.servicePort }}
   type: {{ .Values.backend.serviceType }}

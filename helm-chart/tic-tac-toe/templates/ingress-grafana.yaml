@@ -1,0 +1,11 @@
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+spec:
+  rules:
+    - host: grafana.local
+      http:
+        paths:
+          - path: /
+            backend: prometheus-stack-grafana

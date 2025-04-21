@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 from pydantic import BaseModel
 
-from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST, Info
 from fastapi.responses import Response as FastAPIResponse
 
 app = FastAPI()
@@ -24,11 +24,23 @@ redis_host = os.getenv("REDIS_HOST", "redis")  # update to your service name
 r = redis.Redis(host=redis_host, port=6379, decode_responses=True)
 
 # Prometheus Metrics
+app_info = Info("app_info", "Basic app metadata")
+app_info.info({
+    "version": "1.0.0",
+    "language": "python",
+    "framework": "fastapi"
+})
 games_played = Counter("games_played_total", "Total number of games played")
-game_resets = Counter("game_resets_total", "Total number of game resets")
-invalid_moves = Counter("invalid_moves_total", "Total number of invalid moves")
+full_game_resets_total = Counter("full_game_resets_total", "Total number of game resets")
 x_wins = Counter("x_wins_total", "Total wins by player X")
 o_wins = Counter("o_wins_total", "Total wins by player O")
+draws = Counter("draws_total", "Total number of drawn games")
+
+invalid_moves = Counter(
+    "invalid_moves_total", 
+    "Total number of invalid moves", 
+    ["reason"]
+)
 
 # Initialize game state in Redis if missing
 def init_state():
@@ -114,14 +126,14 @@ def api_get_state():
 @app.post("/api/move/{index}")
 def make_move(index: int):
     if index < 0 or index >= 9:
-        invalid_moves.inc()
-        return {"error": "Invalid move"}
+        invalid_moves.labels(reason="out_of_bounds").inc()
+        return {"error": "Invalid move - index out of bounds"}
 
     board, x_is_next = get_state()
 
     if board[index] is not None:
-        invalid_moves.inc()
-        return {"error": "Invalid move"}
+        invalid_moves.labels(reason="cell_taken").inc()
+        return {"error": "Invalid move - cell_taken"}
 
     board[index] = "X" if x_is_next else "O"
     x_is_next = not x_is_next
@@ -158,6 +170,7 @@ def make_move(index: int):
         }
 
     if check_draw(board):
+        draws.inc()
         games_played.inc()
 
         scores = get_scores()
@@ -197,7 +210,6 @@ class ResetRequest(BaseModel):
 
 @app.post("/api/reset")
 def reset_game(payload: ResetRequest):
-    game_resets.inc()
     save_state([None] * 9, True)
 
     response = {
@@ -206,6 +218,7 @@ def reset_game(payload: ResetRequest):
     }
 
     if payload.reset_stats:
+        full_game_resets_total.inc()
         save_scores({"X": 0, "O": 0, "draws": 0})
         save_history([])
         response["scores"] = get_scores()

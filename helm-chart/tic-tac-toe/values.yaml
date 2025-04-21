@@ -10,7 +10,7 @@ backend:
   servicePort: 8000
   serviceType: ClusterIP
 ingress:
-  host: tic-tac-toe.test
+  host: tic-tac-toe.local
 redis:
   replicaCount: 1
   image: redis:7.2-alpine
