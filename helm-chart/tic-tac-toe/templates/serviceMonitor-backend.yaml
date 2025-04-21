@@ -15,4 +15,4 @@ spec:
       interval: 15s
   namespaceSelector:
     matchNames:
-      - default                 # namespace where your backend Service is running
+      - monitoring                 # namespace where your backend Service is running
