@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tic-tac-toe-backend
 spec:
-  revisionHistoryLimit: 2
+  revisionHistoryLimit: 1
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
