@@ -1,15 +1,23 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import redis
 import json
 import os
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from pydantic import BaseModel
 
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST, Info
+from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.responses import Response as FastAPIResponse
 
 app = FastAPI()
+
+instrumentator = Instrumentator(
+    should_group_status_codes=True,
+    should_ignore_untemplated=True
+)
+
+instrumentator.instrument(app).expose(app)
 
 # Allow frontend to call this API
 app.add_middleware(

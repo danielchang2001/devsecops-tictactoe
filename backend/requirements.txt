@@ -6,3 +6,4 @@ httpx
 setuptools>=70.0.0
 redis
 prometheus_client
+prometheus-fastapi-instrumentator
