@@ -20,9 +20,6 @@ spec:
           image: {{ .Values.redis.image }}
           ports:
             - containerPort: {{ .Values.redis.containerPort }}
-          volumeMounts:
-          - name: redis-data
-            mountPath: /data
           resources:
             limits:
               memory: "256Mi"
