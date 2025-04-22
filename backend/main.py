@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from pydantic import BaseModel
 
-from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST, Info
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST, Info, Gauge
 from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.responses import Response as FastAPIResponse
 
@@ -40,9 +40,7 @@ app_info.info({
 })
 games_played = Counter("games_played_total", "Total number of games played")
 full_game_resets_total = Counter("full_game_resets_total", "Total number of game resets")
-x_wins = Counter("x_wins_total", "Total wins by player X")
-o_wins = Counter("o_wins_total", "Total wins by player O")
-draws = Counter("draws_total", "Total number of drawn games")
+wins_total = Counter("wins_total", "Total number of wins by outcome", ["outcome"])
 
 invalid_moves = Counter(
     "invalid_moves_total", 
@@ -165,10 +163,8 @@ def make_move(index: int):
         })
         save_history(history)
 
-        if winner == "X":
-            x_wins.inc()
-        elif winner == "O":
-            o_wins.inc()
+        wins_total.labels(outcome=winner).inc()
+
         return {
             "board": board,
             "x_is_next": x_is_next,
@@ -178,7 +174,7 @@ def make_move(index: int):
         }
 
     if check_draw(board):
-        draws.inc()
+        wins_total.labels(outcome="draw").inc()
         games_played.inc()
 
         scores = get_scores()
