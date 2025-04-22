@@ -24,3 +24,10 @@ spec:
                 name: tic-tac-toe-backend
                 port:
                   number: {{ .Values.backend.servicePort }}
+          - path: /metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: tic-tac-toe-backend
+                port:
+                  number: {{ .Values.backend.servicePort }}
