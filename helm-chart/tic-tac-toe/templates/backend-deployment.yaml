@@ -20,7 +20,7 @@ spec:
           image: {{ .Values.backend.image }}
           imagePullPolicy: Always
           ports:
-            - containerPort: 8000
+            - containerPort: {{ .Values.backend.containerPort}}
           resources:
             limits:
               cpu: "0.5"

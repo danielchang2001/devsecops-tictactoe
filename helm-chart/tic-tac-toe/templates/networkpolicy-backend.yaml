@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-ingress-prometheus-to-backend
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: tic-tac-toe-backend  # Target the backend pods
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: tic-tac-toe-frontend  # Allow frontend pods to call backend
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx  # Allow traffic from Ingress controller pod
+        - namespaceSelector:
+            matchNames:
+              - monitoring
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus  # Allow Prometheus in 'monitoring' namespace to scrape /metrics
+      ports:
+        - protocol: TCP
+          port: {{ .Values.backend.containerPort}}
