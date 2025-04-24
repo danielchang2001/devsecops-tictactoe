@@ -4,6 +4,7 @@ metadata:
   name: redis
   labels:
     app: redis
+    role: app
 spec:
   revisionHistoryLimit: 1
   replicas: {{ .Values.redis.replicaCount }}
@@ -14,6 +15,7 @@ spec:
     metadata:
       labels:
         app: redis
+        role: app
     spec:
       containers:
         - name: redis
