@@ -1,0 +1,9 @@
+# kind-with-calico.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  disableDefaultCNI: true  # Required to install Calico manually
+  podSubnet: "192.168.0.0/16"  # Calico default subnet
+nodes:
+  - role: control-plane
+  - role: worker
