@@ -4,6 +4,6 @@ metadata:
   name: default-deny-all
   namespace: default
 spec:
-  podSelector: {}
+  podSelector: {{ toYaml .Values.defaultDeny.podSelector | nindent 2 }}
   policyTypes:
     - Ingress
