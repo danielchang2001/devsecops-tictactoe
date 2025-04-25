@@ -10,4 +10,13 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    - {}  # allow all sources
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx  # Only allow Ingress to serve frontend
+          namespaceSelector:
+            matchLabels:
+              name: ingress-nginx  # You must label the ingress-nginx namespace
+      ports:
+        - protocol: TCP
+          port: {{ .Values.frontend.containerPort}}
