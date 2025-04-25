@@ -4,8 +4,6 @@ metadata:
   name: default-deny-all
   namespace: default
 spec:
-  podSelector:
-    matchLabels:
-      role: app
+  podSelector: {}
   policyTypes:
     - Ingress

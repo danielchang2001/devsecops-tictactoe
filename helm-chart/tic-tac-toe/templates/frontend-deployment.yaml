@@ -4,7 +4,6 @@ metadata:
   name: tic-tac-toe-frontend
   labels:
     app: tic-tac-toe-frontend
-    role: app
 spec:
   revisionHistoryLimit: 1
   replicas: {{ .Values.frontend.replicaCount }}
@@ -15,7 +14,6 @@ spec:
     metadata:
       labels:
         app: tic-tac-toe-frontend
-        role: app
     spec:
       containers:
         - name: frontend
