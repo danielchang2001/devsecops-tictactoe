@@ -1,8 +1,0 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: calico-apiserver
-rules:
-  - apiGroups: ["crd.projectcalico.org"]
-    resources: ["bgpfilters", "bgpfilters/status"]
-    verbs: ["get", "list", "watch"]
