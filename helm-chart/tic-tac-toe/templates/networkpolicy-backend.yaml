@@ -13,9 +13,6 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: tic-tac-toe-frontend  # Allow frontend pods to call backend
-        - podSelector:
-            matchLabels:
               app.kubernetes.io/name: ingress-nginx  # Allow traffic from Ingress controller pod
           namespaceSelector:
             matchLabels:
