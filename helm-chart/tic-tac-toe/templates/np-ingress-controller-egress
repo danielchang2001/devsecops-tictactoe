@@ -30,3 +30,11 @@ spec:
       ports:
         - protocol: TCP
           port: 8000
+    - to:
+        - ipBlock:
+            cidr: 10.96.0.0/12   # Typical Kubernetes Service CIDR
+      ports:
+        - protocol: TCP
+          port: 80
+        - protocol: TCP
+          port: 8000
