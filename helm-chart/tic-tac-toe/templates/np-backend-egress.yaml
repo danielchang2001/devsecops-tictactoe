@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-backend-egress-to-redis
+  name: allow-backend-egress-to-services
   namespace: default
 spec:
   podSelector:
@@ -11,9 +11,8 @@ spec:
     - Egress
   egress:
     - to:
-        - podSelector:
-            matchLabels:
-              app: redis
+        - ipBlock:
+            cidr: 10.96.0.0/12  # Allow egress to all Kubernetes internal services
       ports:
         - protocol: TCP
           port: {{ .Values.redis.containerPort}}
