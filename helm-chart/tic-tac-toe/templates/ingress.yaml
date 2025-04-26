@@ -4,14 +4,14 @@ metadata:
   name: tic-tac-toe-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
-    # cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
-  # tls:
-  #   - hosts:
-  #       - {{ .Values.ingress.host }}
-  #     secretName: tic-tac-toe-tls
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: tic-tac-toe-tls
   rules:
     - host: {{ .Values.ingress.host }}
       http:
