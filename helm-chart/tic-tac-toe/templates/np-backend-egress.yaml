@@ -21,8 +21,9 @@ spec:
 
     # 2. Allow Redis traffic
     - to:
-        - ipBlock:
-            cidr: 192.168.126.0/24
+        - podSelector:
+            matchLabels:
+              app: redis
       ports:
         - protocol: TCP
-          port: {{ .Values.redis.containerPort }}
+          port: 6379
