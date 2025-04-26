@@ -11,10 +11,22 @@ spec:
     - Egress
   egress:
     - to:
-        - ipBlock:
-            cidr: 192.168.126.0/24
+        - namespaceSelector:
+            matchLabels:
+              name: default
+          podSelector:
+            matchLabels:
+              app: tic-tac-toe-frontend
       ports:
         - protocol: TCP
-          port: 80     # Frontend
+          port: 80
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: default
+          podSelector:
+            matchLabels:
+              app: tic-tac-toe-backend
+      ports:
         - protocol: TCP
-          port: 8000   # Backend
+          port: 8000
