@@ -12,7 +12,7 @@ spec:
   egress:
     - to:
         - ipBlock:
-            cidr: 10.96.0.0/12  # Allow egress to all Kubernetes internal services
+            cidr: 192.168.126.0/24
       ports:
         - protocol: TCP
           port: {{ .Values.redis.containerPort}}
