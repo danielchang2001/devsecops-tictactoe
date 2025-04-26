@@ -13,6 +13,6 @@ spec:
     - to:
         - ipBlock:
             cidr: 192.168.126.0/24
-    - ports:
+      ports:
         - protocol: TCP
           port: {{ .Values.redis.containerPort}}
