@@ -13,7 +13,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app.kubernetes.io/name: ingress-nginx  # Allow traffic from Ingress controller pod
+              app.kubernetes.io/name: nginx  # Allow traffic from Ingress controller pod
           namespaceSelector:
             matchLabels:
               name: ingress-nginx
