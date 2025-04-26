@@ -15,8 +15,8 @@ spec:
           matchLabels:
             name: ingress-nginx
       - podSelector:
-      matchLabels:
-        app.kubernetes.io/name: ingress-nginx
+          matchLabels:
+            app.kubernetes.io/name: ingress-nginx
       ports:
         - protocol: TCP
           port: {{ .Values.frontend.containerPort}}

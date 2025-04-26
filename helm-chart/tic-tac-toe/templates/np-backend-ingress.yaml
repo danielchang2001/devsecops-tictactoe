@@ -11,16 +11,16 @@ spec:
     - Ingress
   ingress:
     - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: ingress-nginx  # Allow traffic from Ingress controller pod
-          namespaceSelector:
-            matchLabels:
-              name: ingress-nginx
         - namespaceSelector:
             matchLabels:
               name: monitoring
-          podSelector:
+        - podSelector:
             matchLabels:
               app.kubernetes.io/name: prometheus  # Allow Prometheus in 'monitoring' namespace to scrape /metrics
       ports:
