@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calico-apiserver
+  namespace: calico-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: calico-apiserver
+  template:
+    metadata:
+      labels:
+        k8s-app: calico-apiserver
+    spec:
+      serviceAccountName: calico-apiserver
+      containers:
+        - name: calico-apiserver
+          image: quay.io/calico/apiserver:v3.26.1
+          ports:
+            - containerPort: 5443
+              name: https
+          env:
+            - name: APISERVER_LOG_LEVEL
+              value: "info"
+            - name: APISERVER_BIND_ADDRESS
+              value: "0.0.0.0:5443"
+          volumeMounts:
+            - mountPath: /certs
+              name: apiserver-certs
+              readOnly: true
+      volumes:
+        - name: apiserver-certs
+          secret:
+            secretName: calico-apiserver-certs
