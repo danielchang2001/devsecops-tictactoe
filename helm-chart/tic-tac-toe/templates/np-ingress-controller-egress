@@ -12,4 +12,9 @@ spec:
   egress:
     - to:
         - ipBlock:
-            cidr: 10.96.0.0/12
+            cidr: 192.168.126.0/24
+    - ports:
+        - protocol: TCP
+          port: 80     # Frontend
+        - protocol: TCP
+          port: 8000   # Backend
