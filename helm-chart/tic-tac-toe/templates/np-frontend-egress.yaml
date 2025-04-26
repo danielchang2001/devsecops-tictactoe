@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-backend-egress-to-services
+  name: allow-frontend-egress-to-services
   namespace: default
 spec:
   podSelector:
     matchLabels:
-      app: tic-tac-toe-backend
+      app: tic-tac-toe-frontend
   policyTypes:
     - Egress
   egress:
@@ -15,4 +15,4 @@ spec:
             cidr: 192.168.126.0/24
     - ports:
         - protocol: TCP
-          port: {{ .Values.redis.containerPort}}
+          port: 8000
