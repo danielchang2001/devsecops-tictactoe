@@ -6,11 +6,10 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: nginx
+      app.kubernetes.io/name: ingress-nginx
   policyTypes:
     - Egress
   egress:
     - to:
         - ipBlock:
             cidr: 10.96.0.0/12
-            
