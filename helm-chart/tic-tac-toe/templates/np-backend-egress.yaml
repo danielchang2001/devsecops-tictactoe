@@ -10,9 +10,19 @@ spec:
   policyTypes:
     - Egress
   egress:
+    # 1. Allow DNS lookups
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+
+    # 2. Allow Redis traffic
     - to:
         - ipBlock:
             cidr: 192.168.126.0/24
       ports:
         - protocol: TCP
-          port: {{ .Values.redis.containerPort}}
+          port: {{ .Values.redis.containerPort }}

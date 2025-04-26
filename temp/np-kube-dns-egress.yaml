@@ -13,6 +13,8 @@ spec:
     - to:
         - ipBlock:
             cidr: 10.96.0.10/32  # kube-dns service cluster IP
+        - ipBlock:
+            cidr: 10.96.0.10/32  # kube-dns service cluster IP
       ports:
         - protocol: UDP
           port: 53
