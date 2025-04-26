@@ -10,31 +10,13 @@ spec:
   policyTypes:
     - Egress
   egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              name: default
-          podSelector:
-            matchLabels:
-              app: tic-tac-toe-frontend
-      ports:
-        - protocol: TCP
-          port: 80
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              name: default
-          podSelector:
-            matchLabels:
-              app: tic-tac-toe-backend
-      ports:
-        - protocol: TCP
-          port: 8000
+    # Allow internal pod-to-pod traffic only within cluster subnet
+    # No external internet traffic allowed
     - to:
         - ipBlock:
-            cidr: 10.96.0.0/12   # Typical Kubernetes Service CIDR
+            cidr: 192.168.126.0/24
       ports:
         - protocol: TCP
-          port: 80
+          port: 80     # Frontend
         - protocol: TCP
-          port: 8000
+          port: 8000   # Backend
