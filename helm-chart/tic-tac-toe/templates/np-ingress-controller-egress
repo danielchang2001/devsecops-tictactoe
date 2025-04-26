@@ -13,3 +13,6 @@ spec:
     - to:
         - ipBlock:
             cidr: 10.96.0.0/12
+      ports:
+        - protocol: TCP
+          port: {{ .Values.frontend.containerPort}}
