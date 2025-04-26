@@ -10,33 +10,13 @@ spec:
   policyTypes:
     - Egress
   egress:
+    # Allow internal pod-to-pod traffic only within cluster subnet
+    # No external internet traffic allowed
     - to:
-        - namespaceSelector:
-            matchLabels:
-              name: default
-          podSelector:
-            matchLabels:
-              app: tic-tac-toe-frontend
+        - ipBlock:
+            cidr: 192.168.126.0/24
       ports:
         - protocol: TCP
-          port: 80
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              name: default
-          podSelector:
-            matchLabels:
-              app: tic-tac-toe-frontend
-      ports:
+          port: 80     # Frontend
         - protocol: TCP
-          port: 80
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              name: cert-manager
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: cert-manager-webhook
-      ports:
-        - protocol: TCP
-          port: 443
+          port: 8000   # Backend
