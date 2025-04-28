@@ -18,7 +18,7 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 - **Frontend**: React app served via Ingress
 - **Backend**: FastAPI with Redis state persistence, Prometheus metrics, and Unit Tests
 - **State Management**: Redis database
-- **CI/CD**: GitHub Actions pipelines with Unit Tests, Linting, and Trivy image scanning
+- **CI/CD**: GitHub Actions pipelines with unit tests, static code analysis, and Trivy image scanning
 - **Deployment**: GitOps using ArgoCD and Helm Charts
 - **Security**: Calico CNI with NetworkPolicies for pod-to-pod access control, podSecurityContexts for container permissions, and RBAC for protecting Kubernetes Secrets
 - **Monitoring**: Prometheus and Grafana served via Ingress
