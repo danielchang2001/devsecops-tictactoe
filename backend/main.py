@@ -33,8 +33,14 @@ app.add_middleware(
 
 
 # --- Connect to Redis database ---
-redis_host = os.getenv("REDIS_HOST", "redis")  # update to your service name
-r = redis.Redis(host=redis_host, port=6379, decode_responses=True)
+redis_host = os.getenv("REDIS_HOST", "redis")
+redis_password = os.getenv("REDIS_PASSWORD", None)
+r = redis.Redis(
+    host=redis_host,
+    port=6379,
+    password=redis_password,
+    decode_responses=True
+)
 
 
 # --- Define Prometheus metrics ---

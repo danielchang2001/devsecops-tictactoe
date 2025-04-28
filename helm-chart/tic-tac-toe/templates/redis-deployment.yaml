@@ -45,3 +45,10 @@ spec:
             periodSeconds: 5
           securityContext:
               readOnlyRootFilesystem: true # Container linux filesystem is read only
+          args: ["--requirepass", "$(REDIS_PASSWORD)"]
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: REDIS_PASSWORD
