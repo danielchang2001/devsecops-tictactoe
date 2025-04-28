@@ -61,55 +61,73 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0
 
 If Calico has issues, reapply:
 
+```bash
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
 kubectl apply -f calico-rbac.yaml
 kubectl rollout restart daemonset calico-node -n calico-system
 kubectl delete pod -n calico-system -l k8s-app=calico-node
+```
 
 ### 3. Install Prometheus and Grafana (Monitoring Stack)
 
+```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+```
 
 ### 4. Install ArgoCD (GitOps Controller)
 
+```bash
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
 
 Port Forward ArgoCD UI:
 
+```bash
 kubectl port-forward svc/argocd-server 9000:80 -n argocd
+```
 
 Get ArgoCD Admin Password:
 
+```bash
 kubectl get secrets -n argocd
 kubectl edit secret argocd-initial-admin-secret -n argocd
 echo <password> | base64 --decode
+```
 
 Access ArgoCD at http://localhost:9000 (Username: admin, Password: decoded password)
 
 ### 5. Install Ingress Controller (NGINX)
 
+```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
+```
 
 Port Forward Ingress Controller:
 
+```bash
 kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 8080:80
+```
 
 ### 6. Configure Local DNS Resolution
 
 Update your /etc/hosts file:
 
+```bash
 127.0.0.1 tic-tac-toe.local
 127.0.0.1 grafana.local
 127.0.0.1 prometheus.local
+```
 
 ### 7. Install Cert-Manager for TLS Certificates
 
+```bash
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
+```
 
 Cert-Manager automates certificate management for your Ingresses.
 
@@ -117,11 +135,13 @@ Cert-Manager automates certificate management for your Ingresses.
 
 Create a GitHub Personal Access Token with read:packages and write:packages permissions.
 
+```bash
 kubectl create secret docker-registry github-container-registry \
   --docker-server=ghcr.io \
   --docker-username=YOUR_GITHUB_USERNAME \
   --docker-password=YOUR_GITHUB_TOKEN \
   --docker-email=YOUR_EMAIL
+```
 
 ## 🧪 Testing Network Policies
 
@@ -129,11 +149,15 @@ Test pod-to-pod connectivity restrictions:
 
 1. Get frontend pod name:
 
+```bash
 kubectl get pods -l app=tic-tac-toe-frontend
+```
 
 2. Connect to the pod:
 
+```bash
 kubectl exec -it <frontend-pod-name> -- sh
+```
 
 3. Try curl to backend pod IP or Redis — verify traffic is correctly allowed or blocked based on NetworkPolicies.
 
