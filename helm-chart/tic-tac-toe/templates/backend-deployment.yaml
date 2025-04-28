@@ -48,5 +48,11 @@ spec:
             periodSeconds: 5
           securityContext:
               readOnlyRootFilesystem: true # Container linux filesystem is read only
+          env:
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: REDIS_HOST
       imagePullSecrets:
         - name: github-container-registry # Reference a Kubernetes Secret for pulling private container images from GitHub Container Registry
