@@ -2,11 +2,13 @@
 
 A complete DevSecOps platform deploying a containerized React-FastAPI-Redis web application to Kubernetes, integrating security best practices, observability, and GitOps workflows.
 
+
 ---
 
 ## 📚 Project Overview
 
 This project demonstrates a secure, production-grade DevSecOps workflow using Kubernetes (KIND), GitHub Actions, ArgoCD, Docker, Prometheus, Grafana, and Kubernetes security best practices (Secrets, RBAC, TLS, NetworkPolicies).
+
 
 ---
 
@@ -20,6 +22,7 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 - **Security**: Calico CNI with NetworkPolicies for pod-to-pod access control, podSecurityContexts for container permissions, and RBAC for protecting Kubernetes Secrets
 - **Monitoring**: Prometheus and Grafana served via Ingress
 
+
 ---
 
 ## 🔐 Security Best Practices Implemented
@@ -31,6 +34,7 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 - Calico NetworkPolicies enforcing least-privilege pod-to-pod access
 - Secure CI/CD with Trivy scans during Docker image builds
 - GitOps continuous deployment via ArgoCD with limited cluster permissions
+
 
 ---
 
@@ -48,9 +52,22 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 | Frontend | React (Vite) |
 | Helm Charts | Custom application deployment |
 
+
 ---
 
 ## ⚙️ Setup Instructions
+
+
+### 1. Create a KIND cluster with Calico
+
+Run at project root dir:
+
+```bash
+kind create cluster --config kind-calico.yaml --name devsecops-webapp
+```
+
+kind-calico.yaml must configure Calico CNI.
+
 
 ### 2. Install Calico CNI
 
@@ -68,6 +85,7 @@ kubectl rollout restart daemonset calico-node -n calico-system
 kubectl delete pod -n calico-system -l k8s-app=calico-node
 ```
 
+
 ### 3. Install Prometheus and Grafana (Monitoring Stack)
 
 ```bash
@@ -75,6 +93,7 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 helm install prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
 ```
+
 
 ### 4. Install ArgoCD (GitOps Controller)
 
@@ -99,6 +118,7 @@ echo <password> | base64 --decode
 
 Access ArgoCD at http://localhost:9000 (Username: admin, Password: decoded password)
 
+
 ### 5. Install Ingress Controller (NGINX)
 
 ```bash
@@ -113,6 +133,7 @@ Port Forward Ingress Controller:
 kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 8080:80
 ```
 
+
 ### 6. Configure Local DNS Resolution
 
 Update your /etc/hosts file:
@@ -123,6 +144,7 @@ Update your /etc/hosts file:
 127.0.0.1 prometheus.local
 ```
 
+
 ### 7. Install Cert-Manager for TLS Certificates
 
 ```bash
@@ -130,6 +152,7 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 ```
 
 Cert-Manager automates certificate management for your Ingresses.
+
 
 ### 8. Configure GitHub Container Registry Pull Secrets
 
@@ -143,11 +166,13 @@ kubectl create secret docker-registry github-container-registry \
   --docker-email=YOUR_EMAIL
 ```
 
+
 ---
 
 ## 🧪 Testing Network Policies
 
 Test pod-to-pod connectivity restrictions:
+
 
 1. Get frontend pod name:
 
@@ -155,15 +180,18 @@ Test pod-to-pod connectivity restrictions:
 kubectl get pods -l app=tic-tac-toe-frontend
 ```
 
+
 2. Connect to the pod:
 
 ```bash
 kubectl exec -it <frontend-pod-name> -- sh
 ```
 
+
 3. Try curl to backend pod IP or Redis — verify traffic is correctly allowed or blocked based on NetworkPolicies.
 
 ---
+
 
 ## 📈 Monitoring and Observability
 
@@ -172,6 +200,7 @@ Access Grafana at http://grafana.local
 Access Prometheus at http://prometheus.local
 
 View Kubernetes, API, and application-level metrics on custom Grafana dashboards.
+
 
 ## 🚀 Future Improvements (Optional)
 
