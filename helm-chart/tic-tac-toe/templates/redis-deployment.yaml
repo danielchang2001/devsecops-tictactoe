@@ -16,6 +16,11 @@ spec:
       labels:
         app: redis
     spec:
+      podSecurityContext:
+        runAsUser: 1000 # App process inside container runs as User 1000 (non-root)
+        runAsGroup: 3000 # App process inside container belongs to Group 3000
+        fsGroup: 2000 # All mounted volumes inside pod are owned by Group 2000
+        runAsNonRoot: true # App must NOT run as root, Kubernetes enforces this
       containers:
         - name: redis
           image: {{ .Values.redis.image }}
@@ -38,3 +43,5 @@ spec:
               port: {{ .Values.redis.containerPort }}
             initialDelaySeconds: 5
             periodSeconds: 5
+          securityContext:
+              readOnlyRootFilesystem: true # Container linux filesystem is read only
