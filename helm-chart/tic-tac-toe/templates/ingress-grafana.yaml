@@ -1,3 +1,4 @@
+# Grafana Ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,15 +7,15 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx # Use nginx ingress controller
   rules:
-    - host: grafana.local
+    - host: grafana.local # Ingress host at grafana.local
       http:
         paths:
-          - path: /
+          - path: / # Route any traffic at root
             pathType: Prefix
             backend:
               service:
-                name: prometheus-stack-grafana
+                name: prometheus-stack-grafana # Route traffic from ingress to grafana k8s service
                 port:
-                  number: 80
+                  number: 80 # HTTP

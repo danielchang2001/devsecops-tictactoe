@@ -1,3 +1,4 @@
+# Frontend k8s deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,28 +18,28 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: {{ .Values.frontend.image }}
+          image: {{ .Values.frontend.image }} # Frontend image from values.yaml (updated by GH actions)
           imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.frontend.containerPort }}
           resources:
             limits:
-              cpu: "0.5"
-              memory: "512Mi"
+              cpu: "0.5" # 500 millicores
+              memory: "512Mi" # 1/2 GB ram
             requests:
-              cpu: "0.2"
-              memory: "256Mi"
-          livenessProbe:
+              cpu: "0.2" # 200 millicores
+              memory: "256Mi" # 1/4 GB ram
+          livenessProbe: # Kubelet sends HTTP GET from node to container ip and port at / (index.html). If not 200, kill and restart container
             httpGet:
               path: /
               port: {{ .Values.frontend.containerPort }}
             initialDelaySeconds: 30
             periodSeconds: 10
-          readinessProbe:
+          readinessProbe: # Kubelet sends HTTPGET from node to container ip and port at / (index.html). If not 200, stop sending traffic to container
             httpGet:
               path: /
               port: {{ .Values.frontend.containerPort }}
             initialDelaySeconds: 5
             periodSeconds: 5
       imagePullSecrets:
-        - name: github-container-registry
+        - name: github-container-registry # Reference a Kubernetes Secret for pulling private container images from GitHub Container Registry

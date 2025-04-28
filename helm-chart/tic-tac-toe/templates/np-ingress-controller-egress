@@ -1,22 +1,24 @@
+# Ingress Controller egress network policy
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-nginx-egress
+  name: np-allow-nginx-egress
   namespace: ingress-nginx
 spec:
+  # Spec for ingress-nginx ingress controller
   podSelector:
     matchLabels:
       app.kubernetes.io/name: ingress-nginx
   policyTypes:
     - Egress
   egress:
-    # Allow internal pod-to-pod traffic only within cluster subnet
-    # No external internet traffic allowed
+    # Allow ingress controller egress traffic to any pod IPs in the cluster
+    # No external traffic (e.g. google.com)
     - to:
         - ipBlock:
             cidr: 192.168.126.0/24
       ports:
         - protocol: TCP
-          port: 80     # Frontend
+          port: {{ .Values.frontend.containerPort}}
         - protocol: TCP
-          port: 8000   # Backend
+          port: {{ .Values.backend.containerPort}}

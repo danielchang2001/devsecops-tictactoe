@@ -1,7 +1,8 @@
+# Backend egress network policy
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-backend-egress
+  name: np-allow-backend-egress
   namespace: default
 spec:
   podSelector:
@@ -10,7 +11,7 @@ spec:
   policyTypes:
     - Egress
   egress:
-    # 1. Allow DNS lookups
+    # Allow egress DNS traffic from the backend
     - to:
         - namespaceSelector: {}
       ports:
@@ -19,11 +20,11 @@ spec:
         - protocol: TCP
           port: 53
 
-    # 2. Allow Redis traffic
+    # Allow egress backend traffic to redis pod
     - to:
         - podSelector:
             matchLabels:
               app: redis
       ports:
         - protocol: TCP
-          port: 6379
+          port: {{ .Values.redis.containerPort }}

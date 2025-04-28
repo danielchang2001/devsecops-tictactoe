@@ -1,3 +1,4 @@
+# Redis k8s deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,8 +23,18 @@ spec:
             - containerPort: {{ .Values.redis.containerPort }}
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "100m" # 100 millicores min
+              memory: "128Mi" # 1/8 GB ram min
             limits:
-              cpu: "250m"
-              memory: "256Mi"
+              cpu: "250m" # 250 millicores max
+              memory: "256Mi" # 1/4 GB ram max
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.redis.containerPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.redis.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 5

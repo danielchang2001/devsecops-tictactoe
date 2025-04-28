@@ -1,3 +1,4 @@
+# Backend Kubernetes deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,9 +6,9 @@ metadata:
   labels:
     app: tic-tac-toe-backend
 spec:
-  revisionHistoryLimit: 1
-  replicas: {{ .Values.backend.replicaCount }}
-  selector:
+  revisionHistoryLimit: 1 
+  replicas: {{ .Values.backend.replicaCount }} # 1 running pod replica
+  selector: 
     matchLabels:
       app: tic-tac-toe-backend
   template:
@@ -17,28 +18,28 @@ spec:
     spec:
       containers:
         - name: backend
-          image: {{ .Values.backend.image }}
-          imagePullPolicy: Always
+          image: {{ .Values.backend.image }} # Backend docker image
+          imagePullPolicy: Always 
           ports:
-            - containerPort: {{ .Values.backend.containerPort}}
+            - containerPort: {{ .Values.backend.containerPort}} # Backend container port
           resources:
             limits:
-              cpu: "0.5"
-              memory: "512Mi"
+              cpu: "0.5" # 500 millicore max
+              memory: "512Mi" # 1/2 GB max
             requests:
-              cpu: "0.2"
-              memory: "256Mi"
-          livenessProbe:
+              cpu: "0.2" # 200 millicore min
+              memory: "256Mi" # 1/4 GB ram min
+          livenessProbe: # Kubelet sends HTTP GET from node to container ip and port at /health endpoint. If not 200, kill and restart container
             httpGet:
               path: /health
               port: 8000
             initialDelaySeconds: 30
             periodSeconds: 10
-          readinessProbe:
+          readinessProbe: # Kubelet sends HTTP GET from node to container ip and port at /health. If not 200, stop sending traffic to container
             httpGet:
               path: /health
               port: 8000
             initialDelaySeconds: 5
             periodSeconds: 5
       imagePullSecrets:
-        - name: github-container-registry
+        - name: github-container-registry # Reference a Kubernetes Secret for pulling private container images from GitHub Container Registry

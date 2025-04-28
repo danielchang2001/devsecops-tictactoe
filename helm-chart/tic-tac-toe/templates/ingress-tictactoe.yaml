@@ -1,14 +1,15 @@
+# TicTacToe Ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: tic-tac-toe-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer # self signed cert for TLS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true" # HTTP -> HTTPS
 spec:
   ingressClassName: nginx
-  tls:
+  tls: # Set up TLS
     - hosts:
         - {{ .Values.ingress.host }}
       secretName: tic-tac-toe-tls
@@ -16,21 +17,21 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: /
+          - path: / # At root of ingress send to frontend
             pathType: Prefix
             backend:
               service:
                 name: tic-tac-toe-frontend
                 port:
                   number: {{ .Values.frontend.servicePort }}
-          - path: /api
+          - path: /api # At /api route of ingress send to backend
             pathType: Prefix
             backend:
               service:
                 name: tic-tac-toe-backend
                 port:
                   number: {{ .Values.backend.servicePort }}
-          - path: /metrics
+          - path: /metrics # At /metrics route of ingress send to backend (prometheus metrics endpoint)
             pathType: Prefix
             backend:
               service:

@@ -1,19 +1,21 @@
+# Redis ingress network policy
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-redis-ingress
+  name: np-allow-redis-ingress
   namespace: default
 spec:
   podSelector:
     matchLabels:
-      app: redis  # Target Redis pods
+      app: redis  
   policyTypes:
     - Ingress
   ingress:
+    # Allow redis ingress traffic from backend pods
     - from:
         - podSelector:
             matchLabels:
-              app: tic-tac-toe-backend  # Only backend should access Redis
+              app: tic-tac-toe-backend 
       ports:
         - protocol: TCP
           port: {{ .Values.redis.containerPort}}

@@ -1,3 +1,4 @@
+# Denies all k8s traffic by default
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:

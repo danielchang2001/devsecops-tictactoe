@@ -1,7 +1,8 @@
+# Backend ingress network policy
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-backend-ingress
+  name: np-allow-backend-ingress
   namespace: default
 spec:
   podSelector:
@@ -11,12 +12,14 @@ spec:
     - Ingress
   ingress:
     - from:
+        # Allow ingress backend traffic from tictactoe ingress
         - namespaceSelector:
             matchLabels:
               name: ingress-nginx
           podSelector:
             matchLabels:
               app.kubernetes.io/name: ingress-nginx  # Allow traffic from Ingress controller pod
+        # Allow ingress backend traffic from prometheus pods
         - namespaceSelector:
             matchLabels:
               name: monitoring
