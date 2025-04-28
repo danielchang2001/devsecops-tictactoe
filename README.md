@@ -48,9 +48,9 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 | Frontend | React (Vite) |
 | Helm Charts | Custom application deployment |
 
-## ⚙️ Setup Instructions
-
 ---
+
+## ⚙️ Setup Instructions
 
 ### 2. Install Calico CNI
 
@@ -143,6 +143,8 @@ kubectl create secret docker-registry github-container-registry \
   --docker-email=YOUR_EMAIL
 ```
 
+---
+
 ## 🧪 Testing Network Policies
 
 Test pod-to-pod connectivity restrictions:
@@ -160,6 +162,8 @@ kubectl exec -it <frontend-pod-name> -- sh
 ```
 
 3. Try curl to backend pod IP or Redis — verify traffic is correctly allowed or blocked based on NetworkPolicies.
+
+---
 
 ## 📈 Monitoring and Observability
 
