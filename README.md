@@ -1,4 +1,4 @@
-# DevSecOps TicTacToe Platform
+# DevSecOps Platform for TicTactoe
 
 A complete DevSecOps platform deploying a containerized React-FastAPI-Redis web application to Kubernetes, integrating security best practices, observability, and GitOps workflows.
 
