@@ -216,7 +216,30 @@ Access Prometheus at http://prometheus.local
 View Kubernetes, API, and application-level metrics on custom Grafana dashboards.
 
 
+---
+
 ## 🚀 Future Improvements (Optional)
 
 Enforce secrets encryption at rest using KMS
+
+
+---
+
+## 📚 References
+
+This project was initially inspired by the [DevSecOps CI/CD Pipeline Implementation](https://www.youtube.com/watch?v=Ke_Wr5zPE0A&list=PLdpzxOOAlwvLm5lWlYctUnwaFRIO2Io_5&index=7) tutorial for basic frontend and CI/CD pipeline setup.
+
+The project was significantly expanded to include:
+
+- Full backend development (FastAPI + Redis)
+- Secure multi-stage distroless Docker builds
+- Kubernetes Helm chart deployments
+- Ingress controllers and HTTPS/TLS termination
+- Full GitOps automation using ArgoCD and Helm
+- Secure workload hardening (RBAC, Secrets, Pod Security Contexts)
+- Observability stack with Prometheus and Grafana
+- Kubernetes NetworkPolicies with Calico
+
+---
+
 
