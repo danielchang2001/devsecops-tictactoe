@@ -171,7 +171,7 @@ kubectl create secret docker-registry github-container-registry \
 
 ## 🧪 Testing Network Policies
 
-Test pod-to-pod connectivity restrictions:
+Test pod-to-pod connectivity restrictions, below example should not be allowed since ingress controller serves backend, not the frontend (frontend -> backend traffic not allowed).
 
 
 1. Get frontend pod name:
@@ -188,12 +188,19 @@ kubectl exec -it <frontend-pod-name> -- sh
 ```
 
 
-3. Try curl to backend pod IP or Redis — verify traffic is correctly allowed or blocked based on NetworkPolicies.
+3. Try curl to backend pod and google.com 
+
+```bash
+curl <backend-pod-ip:port>
+curl google.com
+```
 
 ---
 
 
 ## 📈 Monitoring and Observability
+
+Import the Grafana dashboard json file in the Grafana web UI.
 
 Access Grafana at http://grafana.local
 
