@@ -4,11 +4,12 @@ import json
 
 client = TestClient(app)
 
+# Reset Redis before each test to ensure a clean state
 def setup_function():
-    # Reset Redis before each test.
     r.set("board", json.dumps([None] * 9))
     r.set("x_is_next", json.dumps(True))
 
+# Test retrieving the current game state
 def test_get_state():
     response = client.get("/api/state")
     assert response.status_code == 200
@@ -18,6 +19,7 @@ def test_get_state():
     assert isinstance(data["board"], list)
     assert isinstance(data["x_is_next"], bool)
 
+# Test making a valid move updates the board correctly
 def test_make_valid_move():
     response = client.post("/api/move/0")
     data = response.json()
@@ -25,11 +27,13 @@ def test_make_valid_move():
     assert isinstance(data["x_is_next"], bool)
     assert data["status"] == "playing"
 
+# Test making an invalid move (on an already occupied cell) returns an error
 def test_make_invalid_move():
     client.post("/api/move/0")  # First move
-    response = client.post("/api/move/0")  # Invalid move
+    response = client.post("/api/move/0")  # Try move again on same cell
     assert "error" in response.json()
 
+# Test resetting the game clears board state, scores, and history
 def test_reset_game():
     client.post("/api/move/0")  # Make a move
     response = client.post("/api/reset", json={"reset_stats": True})
@@ -40,8 +44,12 @@ def test_reset_game():
     assert data["scores"] == {"X": 0, "O": 0, "draws": 0}
     assert data["history"] == []
 
+# Test a full win scenario (X wins)
 def test_win_scenario():
-    # X -> 0, O -> 3, X -> 1, O -> 4, X -> 2 (X wins)
+    # Board:
+    #  X | X | X  <---
+    #  0 | O | .
+    #  . | . | .
     client.post("/api/reset")
     client.post("/api/move/0")
     client.post("/api/move/3")
@@ -53,10 +61,9 @@ def test_win_scenario():
     assert data["winner"] == "X"
     assert "winning_line" in data
 
+# Test a full draw scenario (no winners)
 def test_draw_scenario():
     client.post("/api/reset")
-
-    # Sequence of moves that ends in a draw
     # Board:
     #  X | O | X
     #  O | O | X
@@ -70,11 +77,13 @@ def test_draw_scenario():
             data = response.json()
             assert data["status"] == "draw"
 
+# Test backend health check endpoint
 def test_health_check():
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
 
+# Test Prometheus metrics endpoint is exposed
 def test_metrics_endpoint():
     response = client.get("/metrics")
     assert response.status_code == 200

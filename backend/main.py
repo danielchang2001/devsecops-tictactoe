@@ -10,16 +10,20 @@ from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST, Inf
 from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.responses import Response as FastAPIResponse
 
+
+# --- Initialize FastAPI app ---
 app = FastAPI()
 
+
+# --- Setup Prometheus monitoring ---
 instrumentator = Instrumentator(
     should_group_status_codes=True,
     should_ignore_untemplated=True
 )
-
 instrumentator.instrument(app).expose(app)
 
-# Allow frontend to call this API
+
+# --- Configure CORS ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allow all domains to access the backend
@@ -27,11 +31,13 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
-# Connect to Redis (use service name inside cluster)
+
+# --- Connect to Redis database ---
 redis_host = os.getenv("REDIS_HOST", "redis")  # update to your service name
 r = redis.Redis(host=redis_host, port=6379, decode_responses=True)
 
-# Prometheus Metrics
+
+# --- Define Prometheus metrics ---
 app_info = Info("app_info", "Basic app metadata")
 app_info.info({
     "version": "1.0.0",
@@ -41,47 +47,53 @@ app_info.info({
 games_played = Counter("games_played_total", "Total number of games played")
 full_game_resets_total = Counter("full_game_resets_total", "Total number of game resets")
 wins_total = Counter("wins_total", "Total number of wins by outcome", ["outcome"])
+invalid_moves = Counter("invalid_moves_total", "Total number of invalid moves", ["reason"])
 
-invalid_moves = Counter(
-    "invalid_moves_total", 
-    "Total number of invalid moves", 
-    ["reason"]
-)
 
-# Initialize game state in Redis if missing
+# --- Redis Helper Functions ---
+
+# Initialize game board if missing
 def init_state():
     if not r.exists("board"):
         r.set("board", json.dumps([None] * 9))
         r.set("x_is_next", json.dumps(True))
 
-# Helper to get game state from Redis
+# Fetch board and turn state from Redis
 def get_state():
     init_state()
     board = json.loads(r.get("board"))
     x_is_next = json.loads(r.get("x_is_next"))
     return board, x_is_next
 
-# Helper to save game state back to Redis
+# Save board and turn state to Redis
 def save_state(board, x_is_next):
     r.set("board", json.dumps(board))
     r.set("x_is_next", json.dumps(x_is_next))
 
+# Fetch player scores from Redis
 def get_scores():
     if r.exists("scores"):
         return json.loads(r.get("scores"))
     return {"X": 0, "O": 0, "draws": 0}
 
+# Save player scores to Redis
 def save_scores(scores):
     r.set("scores", json.dumps(scores))
 
+# Fetch game history from Redis
 def get_history():
     if r.exists("history"):
         return json.loads(r.get("history"))
     return []
 
+# Save game history to Redis
 def save_history(history):
     r.set("history", json.dumps(history))
 
+
+# --- Backend logic helper functions ---
+
+# Returns winner and the winning line
 def calculate_winner(board):
     # All winning line combinations
     winning_combos = [
@@ -97,11 +109,14 @@ def calculate_winner(board):
     
     return None
 
+# Check if the board is full (draw condition)
 def check_draw(board):
     return all(cell is not None for cell in board)
 
 
-# GET current state
+# --- API Endpoints ---
+
+# GET current board state
 @app.get("/api/state")
 def api_get_state():
     board, x_is_next = get_state()
@@ -128,7 +143,7 @@ def api_get_state():
             "status": "playing"
         }
 
-# POST make a move
+# POST make a move at a specific index
 @app.post("/api/move/{index}")
 def make_move(index: int):
     if index < 0 or index >= 9:
@@ -201,17 +216,21 @@ def make_move(index: int):
         "status": "playing"
     }
 
+# GET player scores
 @app.get("/api/scores")
 def get_score_data():
     return get_scores()
 
+# GET full game history
 @app.get("/api/history")
 def get_game_history():
     return get_history()
 
+# Pydantic model for reset payload
 class ResetRequest(BaseModel):
     reset_stats: bool = False
 
+# POST reset the game (optionally reset stats too)
 @app.post("/api/reset")
 def reset_game(payload: ResetRequest):
     save_state([None] * 9, True)
@@ -230,12 +249,12 @@ def reset_game(payload: ResetRequest):
 
     return response
 
-# Health check endpoint
+# GET health check endpoint for Kubernetes probes
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
 
-# Prometheus metrics endpoint
+# GET Prometheus metrics endpoint
 @app.get("/metrics")
 def metrics():
     return FastAPIResponse(
