@@ -2,7 +2,8 @@
 
 A complete DevSecOps platform deploying a containerized React-FastAPI-Redis web application to Kubernetes, integrating security best practices, observability, and GitOps workflows.
 
-![TicTacToe](https://github.com/user-attachments/assets/a188a489-ce62-4bdf-8bca-3ab387709d55)
+![TicTacToe](https://github.com/user-attachments/assets/9786202e-3ba0-4bdc-b422-0e636c7d1ae5)
+
 
 ---
 
