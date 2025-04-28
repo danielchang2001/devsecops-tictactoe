@@ -233,12 +233,11 @@ The project was significantly expanded to include:
 
 - Full backend development (FastAPI + Redis)
 - Secure multi-stage distroless Docker builds
-- Kubernetes Helm chart deployments
-- Ingress controllers and HTTPS/TLS termination
-- Full GitOps automation using ArgoCD and Helm
-- Secure workload hardening (RBAC, Secrets, Pod Security Contexts)
+- GitHub Actions CI/CD pipeline (static code analysis, unit tests, Trivy scans)
+- Kubernetes manifests with Helm templating
+- GitOps automation using ArgoCD
+- Secure workload hardening (HTTPS/TLS, RBAC, Secrets, Pod Security Contexts, Network Policies)
 - Observability stack with Prometheus and Grafana
-- Kubernetes NetworkPolicies with Calico
 
 ---
 
