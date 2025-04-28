@@ -187,6 +187,12 @@ kubectl get pods -l app=tic-tac-toe-frontend
 kubectl exec -it <frontend-pod-name> -- sh
 ```
 
+1. Get backend pod ip:
+
+```bash
+kubectl get pods -o wide
+```
+
 
 3. Try curl to backend pod and google.com 
 
