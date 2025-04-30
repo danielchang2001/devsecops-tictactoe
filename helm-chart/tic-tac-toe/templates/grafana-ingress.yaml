@@ -18,4 +18,4 @@ spec:
               service:
                 name: prometheus-stack-grafana # Route traffic from ingress to grafana k8s service
                 port:
-                  number: 80 # HTTP
+                  number: 3000
