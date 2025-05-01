@@ -17,6 +17,17 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 
 ## 🛠 Architecture Overview
 
+![Architecture Diagram](https://github.com/user-attachments/assets/58c3a612-e8f3-4f32-ae38-f261f939f2f2)
+
+**Key Highlights:**
+- Traffic flows from users through an NGINX Ingress Controller with TLS termination.
+- Backend services expose Prometheus `/metrics`, scraped for observability.
+- Secure pod-to-pod communication is enforced via Kubernetes Network Policies (Calico).
+- Sensitive environment variables are injected via Kubernetes Secrets.
+- RBAC and PodSecurityContext restrict pod access and enforce non-root containers.
+
+---
+
 - **Frontend**: React app served via Ingress
 - **Backend**: FastAPI with Redis state persistence, Prometheus metrics, and Unit Tests
 - **State Management**: Redis database
