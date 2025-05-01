@@ -12,10 +12,17 @@ A complete DevSecOps platform deploying a containerized React-FastAPI-Redis web 
 
 This project demonstrates a secure, production-grade DevSecOps workflow using Kubernetes (KIND), GitHub Actions, ArgoCD, Docker, Prometheus, Grafana, and Kubernetes security best practices (Secrets, RBAC, TLS, NetworkPolicies).
 
+- **Frontend**: React app served via Ingress
+- **Backend**: FastAPI with Redis state persistence, Prometheus metrics, and Unit Tests
+- **State Management**: Redis database
+- **CI/CD**: GitHub Actions pipelines with unit tests, static code analysis, and Trivy image scanning
+- **Deployment**: GitOps using ArgoCD and Helm Charts
+- **Security**: Calico CNI with NetworkPolicies for pod-to-pod access control, podSecurityContexts for container permissions, and RBAC for protecting Kubernetes Secrets
+- **Monitoring**: Prometheus and Grafana served via Ingress
 
 ---
 
-## 🛠 Architecture Overview
+## 🛠 TicTacToe DevSecOps Architecture
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
 
@@ -27,7 +34,10 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 - Sensitive environment variables are injected via Kubernetes Secrets.
 - RBAC and PodSecurityContext restrict pod access and enforce non-root containers.
 
+
 ---
+
+## ⚙️ DevSecOps CI/CD Pipeline
 
 ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
 
@@ -37,17 +47,6 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 3. Images are pushed to a private **GitHub Container Registry (GHCR)**.
 4. The Helm `values.yaml` file is automatically updated with new image tags.
 5. **ArgoCD** detects changes and deploys to a local Kubernetes (KIND) cluster using GitOps.
-
----
-
-- **Frontend**: React app served via Ingress
-- **Backend**: FastAPI with Redis state persistence, Prometheus metrics, and Unit Tests
-- **State Management**: Redis database
-- **CI/CD**: GitHub Actions pipelines with unit tests, static code analysis, and Trivy image scanning
-- **Deployment**: GitOps using ArgoCD and Helm Charts
-- **Security**: Calico CNI with NetworkPolicies for pod-to-pod access control, podSecurityContexts for container permissions, and RBAC for protecting Kubernetes Secrets
-- **Monitoring**: Prometheus and Grafana served via Ingress
-
 
 ---
 
