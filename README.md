@@ -28,6 +28,17 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 
 ---
 
+![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
+
+**CI/CD Flow:**
+1. **GitHub Actions CI/CD** runs tests and linters on every push.
+2. Docker images are built and scanned using **Trivy** for vulnerabilities.
+3. Images are pushed to a private **GitHub Container Registry (GHCR)**.
+4. The Helm `values.yaml` file is automatically updated with new image tags.
+5. **ArgoCD** detects changes and deploys to a local Kubernetes (KIND) cluster using GitOps.
+
+---
+
 - **Frontend**: React app served via Ingress
 - **Backend**: FastAPI with Redis state persistence, Prometheus metrics, and Unit Tests
 - **State Management**: Redis database
