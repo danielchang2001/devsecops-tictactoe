@@ -97,7 +97,7 @@ Monitors:
 
 ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
 
-Tracks:
+Monitors:
 - Request volume over time per endpoint (/api/state, /api/move, etc.)
 - API response latency (avg per endpoint)
 - Error rates (e.g., invalid moves, 5xx)
@@ -107,7 +107,7 @@ Tracks:
 
 ![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
 
-Tracks:
+Monitors:
 - Win ratios for X, O, and draws
 - Fairness indicator (imbalance detection)
 - Game reset frequency (can flag user frustration or abuse)
