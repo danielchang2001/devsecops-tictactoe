@@ -112,6 +112,7 @@ Monitors:
 - Fairness indicator (imbalance detection)
 - Game reset frequency (can flag user frustration or abuse)
 - Invalid moves (e.g., /api/move/99) for bug tracking or exploit attempts
+- Total games played
 
 ---
 
