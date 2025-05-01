@@ -88,7 +88,7 @@ API, infrastructure, and application specific metrics were captured with Prometh
 
 ![image](https://github.com/user-attachments/assets/0909f021-0859-4f65-9a85-196b7f091f11)
 
-Tracks:
+Monitors:
 - Pod-level CPU and memory usage
 - Pod restarts and uptime
 - Node-level CPU and memory usage
@@ -98,20 +98,20 @@ Tracks:
 ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
 
 Tracks:
-- Request count over time per endpoint (/api/state, /api/move, etc.)
-- Average API request response latency
-- Error rates (5xx, invalid moves)
-- API payload (request, response) size monitoring
+- Request volume over time per endpoint (/api/state, /api/move, etc.)
+- API response latency (avg per endpoint)
+- Error rates (e.g., invalid moves, 5xx)
+- Payload size trends (request/response)
 
 **Application Metrics**
 
 ![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
 
 Tracks:
-- Win ratios for Player X, Player O, and draws
-- Real-time fairness signal (Is the game balanced)
-- Reset counts (High value over a short period of time could indicate player frustruation or malicious attempt to spam requests)
-- Any invalid moves (out of bounds API requests such as "/api/move/99", which could also signal attempt to exploit API)
+- Win ratios for X, O, and draws
+- Fairness indicator (imbalance detection)
+- Game reset frequency (can flag user frustration or abuse)
+- Invalid moves (e.g., /api/move/99) for bug tracking or exploit attempts
 
 ---
 
