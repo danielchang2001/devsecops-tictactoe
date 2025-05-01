@@ -255,11 +255,10 @@ This project was initially inspired by the [DevSecOps CI/CD Pipeline Implementat
 
 The project was significantly expanded to include:
 
-- Full backend development (FastAPI + Redis)
+- Backend development (FastAPI + Redis)
 - Secure multi-stage distroless Docker builds
 - GitHub Actions CI/CD pipeline (static code analysis, unit tests, Trivy scans)
-- Kubernetes manifests with Helm templating
-- GitOps automation using ArgoCD
+- Kubernetes manifests with Helm templating and ArgoCD
 - Secure workload hardening (HTTPS/TLS, RBAC, Secrets, Pod Security Contexts, Network Policies)
 - Observability stack with Prometheus and Grafana
 
