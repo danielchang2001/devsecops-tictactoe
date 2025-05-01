@@ -278,7 +278,7 @@ View Kubernetes, API, and application-level metrics on custom Grafana dashboards
 
 ---
 
-## 🚀 Future Improvements (Optional)
+## 🚀 Future Improvements
 
 Enforce secrets encryption at rest using KMS
 
