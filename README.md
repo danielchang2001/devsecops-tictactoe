@@ -280,7 +280,7 @@ View Kubernetes, API, and application-level metrics on custom Grafana dashboards
 
 ## 🚀 Future Improvements
 
-Enforce secrets encryption at rest using KMS
+Enforce secrets encryption at rest using a secrets manager like Hashicorp Vault or KMS
 
 
 ---
