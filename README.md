@@ -17,7 +17,8 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 
 ## 🛠 Architecture Overview
 
-![Architecture Diagram](https://github.com/user-attachments/assets/58c3a612-e8f3-4f32-ae38-f261f939f2f2)
+![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
+
 
 **Key Highlights:**
 - Traffic flows from users through an NGINX Ingress Controller with TLS termination.
