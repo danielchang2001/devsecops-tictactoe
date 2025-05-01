@@ -85,6 +85,7 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 API, infrastructure, and application specific metrics were captured with Prometheus and visualized on Grafana.
 
 **Kubernetes Infrastructure Metrics**
+
 ![image](https://github.com/user-attachments/assets/0909f021-0859-4f65-9a85-196b7f091f11)
 
 Tracks:
@@ -93,6 +94,7 @@ Tracks:
 - Node-level CPU and memory usage
 
 **API Metrics**
+
 ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
 
 Tracks:
@@ -102,6 +104,7 @@ Tracks:
 - API payload (request, response) size monitoring
 
 **Application Metrics**
+
 ![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
 
 Tracks:
