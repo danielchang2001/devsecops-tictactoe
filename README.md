@@ -1,12 +1,12 @@
 # DevSecOps Platform for TicTactoe
 
-I transformed a TicTacToe frontend app into a complete DevSecOps platform. Starting with a React frontend, I added a FastAPI backend and Redis database to persist game state across load-balanced Kubernetes pods. I built a CI/CD pipeline using GitHub Actions to automate builds, tests, and deployments, using secure multi-stage distroless Docker images. Setting up CI/CD early on dramatically improved my local development experience as I could test my changes almost immediately.
+In this personal project, I transformed a simple TicTacToe React frontend into a full-fledged DevSecOps platform. I added a FastAPI backend and a Redis database to persist game state across load-balanced Kubernetes pods. Early on, I set up a CI/CD pipeline using GitHub Actions to automate builds, tests, and deployments — dramatically improving development speed by letting me test changes on a live Kubernetes cluster in seconds.
 
-The pipeline runs unit tests, linters, and Trivy scans before pushing Docker images storing the new committed changes to GitHub Container Registry. It then programmatically updates the image tags in the Helm values.yaml file using yq, commits the change back to the repository, and triggers ArgoCD to deploy the updated images — completing the GitOps loop.
+The pipeline runs unit tests, linters, and Trivy scans on every push. It then builds secure multi-stage distroless Docker images, pushes them to GitHub Container Registry, and programmatically updates Helm image tags using yq. This change is committed back to the repo, triggering ArgoCD to sync and deploy the updated application — completing the GitOps loop.
 
-Security was enforced through HTTPS/TLS termination via NGINX Ingress and Cert-Manager, Secrets and RBAC-controlled ServiceAccounts, PodSecurityContexts for non-root containers, and Calico NetworkPolicies for least-privilege, pod-level communication.
+Security is enforced through HTTPS/TLS termination with NGINX Ingress and Cert-Manager, Kubernetes Secrets protected by RBAC-bound ServiceAccounts, PodSecurityContexts for non-root containers, and Calico NetworkPolicies to restrict pod-to-pod traffic by default.
 
-For observability, I integrated Prometheus and Grafana, exposing custom /metrics from the backend API. Dashboards visualize app-level stats (win rates, fairness, invalid moves), infrastructure usage (CPU/memory), and API performance — emulating real-world SRE practices.
+For observability, I exposed custom /metrics endpoints in the backend and integrated Prometheus and Grafana to visualize key metrics like win ratios, fairness scores, invalid moves, API performance, and cluster resource usage — simulating real-world SRE monitoring workflows.
 
 ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
@@ -16,12 +16,11 @@ For observability, I integrated Prometheus and Grafana, exposing custom /metrics
 
 ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
 
-**CI/CD Flow:**
-1. **GitHub Actions CI/CD** runs tests and linters on every push.
-2. Docker images are built and scanned using **Trivy** for vulnerabilities.
-3. Images are pushed to a private **GitHub Container Registry (GHCR)**.
-4. The Helm `values.yaml` file is updated with new image tags stored in GHCR.
-5. **ArgoCD** detects changes to values.yaml and deploys K8s manifests to a local (KIND) cluster using GitOps.
+- GitHub Actions runs unit tests, linters, and vulnerability scans (via Trivy) on every push.
+- If checks pass, secure multi-stage distroless Docker images are built for the frontend and backend.
+- Images are pushed to GitHub Container Registry (GHCR).
+- A script updates the Helm values.yaml file with the new image tags using yq and commits the change.
+- ArgoCD detects the change and automatically syncs the updated manifests to the local Kubernetes (KIND) cluster.
 
 ---
 
@@ -29,14 +28,12 @@ For observability, I integrated Prometheus and Grafana, exposing custom /metrics
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
 
-
-**Key Highlights:**
-- Traffic flows from users through an NGINX Ingress Controller with TLS termination.
-- Backend services expose Prometheus `/metrics`, scraped for observability.
-- Secure pod-to-pod communication is enforced via Kubernetes Network Policies (Calico).
-- Sensitive environment variables are injected via Kubernetes Secrets.
-- RBAC and PodSecurityContext restrict pod access and enforce non-root containers.
-
+- All user traffic enters through an NGINX Ingress Controller with HTTPS/TLS termination (via Cert-Manager).
+- Prometheus and Grafana are served to monitoring admins using their own respective NGINX Ingress Controllers.
+- The FastAPI backend exposes a custom /metrics endpoint, which Prometheus scrapes for monitoring.
+- Kubernetes NetworkPolicies (Calico) strictly control pod-to-pod communication based on least privilege.
+- Kubernetes Secrets store sensitive environment variables like Redis host name and password.
+- RBAC and PodSecurityContexts limit pod access and enforce non-root containers with read-only filesystems.
 
 ---
 
