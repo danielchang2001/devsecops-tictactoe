@@ -1,10 +1,8 @@
 # DevSecOps Platform for TicTactoe
 
-A complete DevSecOps platform deploying a containerized React-FastAPI-Redis web application to Kubernetes, integrating security best practices, observability, and GitOps workflows.
+A production-grade DevSecOps platform that deploys a secure, observable, and GitOps-driven TicTacToe application to Kubernetes using industry-standard tools like GitHub Actions, ArgoCD, Prometheus, Grafana, and Calico NetworkPolicies.
 
 ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
-
-
 
 ---
 
@@ -80,11 +78,11 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 
 ---
 
-## 📊 Grafana Dashboards – Monitoring & Observability
+## 📊 Grafana Dashboards (Kubernetes, API, Application Metrics)
 
-API, infrastructure, and application specific metrics were captured with Prometheus and visualized on Grafana.
+Prometheus collects metrics from the application and Kubernetes cluster. Grafana visualizes those metrics using custom dashboards.
 
-**Kubernetes Infrastructure Metrics**
+**📦 Infrastructure Metrics**
 
 ![image](https://github.com/user-attachments/assets/0909f021-0859-4f65-9a85-196b7f091f11)
 
@@ -93,23 +91,22 @@ Monitors:
 - Pod restarts and uptime
 - Node-level CPU and memory usage
 
-**API Metrics**
+**🔌 API Metrics**
 
 ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
 
 Monitors:
-- Request volume over time per endpoint (/api/state, /api/move, etc.)
-- API response latency (avg per endpoint)
-- Error rates (e.g., invalid moves, 5xx)
-- Payload size trends (request/response)
+- API request volume and latency
+- Errors (invalid moves, 5xx)
+- Payload size
 
-**Application Metrics**
+**🎮 App Metrics**
 
 ![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
 
 Monitors:
-- Win ratios for X, O, and draws
-- Fairness indicator (imbalance detection)
+- Win/draw ratios
+- Fairness indicator (tracks imbalance over time)
 - Game reset frequency (can flag user frustration or abuse)
 - Invalid moves (e.g., /api/move/99) for bug tracking or exploit attempts
 - Total games played
