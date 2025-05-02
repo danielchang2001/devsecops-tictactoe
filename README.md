@@ -235,7 +235,7 @@ This secret allows Kubernetes to pull container images from ghcr.io.
 
 ## 🧪 Testing Network Policies
 
-This test demonstrates that frontend pods are restricted from accessing backend pods directly, validating that network policies are in effect.
+This test demonstrates that frontend pods are restricted from accessing the internet and backend pods directly, validating that network policies are in effect.
 
 1. Get frontend pod names:
 
