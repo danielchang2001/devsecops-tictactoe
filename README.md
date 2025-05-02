@@ -30,7 +30,7 @@ For observability, I exposed custom /metrics endpoints in the backend and integr
 
 - All user traffic enters through an NGINX Ingress Controller with HTTPS/TLS termination (via Cert-Manager).
 - Prometheus and Grafana are served to monitoring admins using their own respective NGINX Ingress Controllers.
-- The FastAPI backend exposes a custom /metrics endpoint, which Prometheus scrapes for monitoring.
+- The FastAPI backend exposes /api endpoints for the frontend and a /metrics endpoint for Prometheus to scrape.
 - Kubernetes NetworkPolicies (Calico) strictly control pod-to-pod communication based on least privilege.
 - Kubernetes Secrets store sensitive environment variables like Redis host name and password.
 - RBAC and PodSecurityContexts limit pod access and enforce non-root containers with read-only filesystems.
@@ -39,37 +39,36 @@ For observability, I exposed custom /metrics endpoints in the backend and integr
 
 ## 🔐 Security Best Practices Implemented
 
-- HTTPS/TLS termination via Ingress Controller and Cert-Manager
-- Kubernetes Secrets for sensitive environment variables (e.g., Redis password)
-- Pod Security Contexts enforcing non-root users/groups and read-only root container filesystem
-- ServiceAccounts with RBAC roles to restrict access to Kubernetes Secrets
-- Calico NetworkPolicies enforcing least-privilege pod-to-pod access
-- Secure CI/CD with Trivy scans during Docker image builds
-- GitOps continuous deployment via ArgoCD with limited cluster permissions
-
+- HTTPS/TLS termination with NGINX Ingress and Cert-Manager to encrypt traffic in transit.
+- Kubernetes Secrets used to manage sensitive values like the Redis password.
+- PodSecurityContexts enforce non-root containers and read-only root container filesystems.
+- RBAC roles bound to ServiceAccounts restrict pod access to Secrets and other resources.
+- Calico NetworkPolicies control pod-to-pod network communication using least-privilege principles.
+- Trivy image scans integrated into the CI/CD pipeline to detect vulnerabilities before deployment.
+- ArgoCD GitOps model with limited cluster permissions ensures secure and auditable deployments.
 
 ---
 
-## 🧰 Technologies Used
+## 🧰 Tech Stack
 
-| Area | Tools |
-|:---|:---|
-| Containerization | Docker (Multi Stage, Distroless) |
-| Orchestration | Kubernetes (KIND) |
-| CI/CD | GitHub Actions |
-| GitOps | ArgoCD |
-| Monitoring | Prometheus, Grafana |
-| Security | Trivy, Kubernetes Secrets, RBAC, Calico NetworkPolicies |
-| Backend | FastAPI, Redis |
-| Frontend | React (Vite) |
-| Helm Charts | Custom application deployment |
+| Area           | Tools/Tech Used                            |
+|----------------|---------------------------------------------|
+| Containerization | Docker (multi-stage builds, distroless images) |
+| Orchestration  | Kubernetes (local setup via KIND)           |
+| CI/CD          | GitHub Actions                              |
+| GitOps         | ArgoCD for declarative deployments          |
+| Monitoring     | Prometheus & Grafana                        |
+| Security       | Trivy, K8s Secrets, RBAC, Calico NetworkPolicies |
+| Backend        | FastAPI (Python), Redis for state management|
+| Frontend       | React (Vite)                                |
+| Packaging      | Helm charts (custom deployment config)      |
 
 
 ---
 
 ## 📊 Grafana Dashboards (Kubernetes, API, Application Metrics)
 
-Prometheus collects metrics from the application and Kubernetes cluster. Grafana visualizes those metrics using custom dashboards.
+Prometheus scrapes metrics from both the Kubernetes cluster and the application. Grafana uses those metrics to populate custom dashboards that provide real-time observability.
 
 **📦 Infrastructure Metrics**
 
@@ -77,53 +76,54 @@ Prometheus collects metrics from the application and Kubernetes cluster. Grafana
 
 Monitors:
 - Pod-level CPU and memory usage
-- Pod restarts and uptime
-- Node-level CPU and memory usage
-
+- Node-level resource consumption (CPU & RAM)
+- Pod uptime and restart counts
+  
 **🔌 API Metrics**
 
 ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
 
 Monitors:
 - API request volume and latency
-- Errors (invalid moves, 5xx)
-- Payload size
+- Error rates, including invalid moves and 5xx responses
+- Payload size trends across requests and responses
 
 **🎮 App Metrics**
 
 ![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
 
 Monitors:
-- Win/draw ratios
-- Fairness indicator (tracks imbalance over time)
-- Game reset frequency (can flag user frustration or abuse)
-- Invalid moves (e.g., /api/move/99) for bug tracking or exploit attempts
-- Total games played
+- Win/draw ratios to measure gameplay outcomes
+- Fairness indicator, monitoring imbalance between players over time
+- Game reset frequency, useful for detecting user frustration or abuse
+- Invalid move attempts (e.g., /api/move/99) for bug detection and potential exploit attempts
+- Total games played, providing insight into app engagement and volume
 
 ---
 
 ## ⚙️ Setup Instructions
 
+This project runs locally on a Kubernetes cluster using KIND (Kubernetes IN Docker). It includes a fully integrated DevSecOps pipeline with Calico CNI, GitOps via ArgoCD, TLS with Cert-Manager, and observability via Prometheus + Grafana.
 
-### 1. Create a KIND cluster with Calico
+### 1. Create a KIND Cluster with Calico Networking
 
-Run at project root dir:
+From the project root:
 
 ```bash
 kind create cluster --config kind-calico.yaml --name devsecops-webapp
 ```
 
-kind-calico.yaml must configure Calico CNI.
+Your kind-calico.yaml file must configure the cluster to use the Calico CNI plugin for enforcing Kubernetes Network Policies, as KIND doesn't provide this by default.
 
 
-### 2. Install Calico CNI
+### 2. Install Calico CNI (NetworkPolicy Enforcement)
 
 ```bash
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/tigera-operator.yaml
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/custom-resources.yaml
 ```
 
-If Calico has issues, reapply:
+If Calico fails or pods are not scheduling properly, try:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
@@ -133,7 +133,7 @@ kubectl delete pod -n calico-system -l k8s-app=calico-node
 ```
 
 
-### 3. Install Prometheus and Grafana (Monitoring Stack)
+### 3. Deploy Monitoring Stack (Prometheus + Grafana)
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -141,21 +141,22 @@ helm repo update
 helm install prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
 ```
 
+This sets up full observability for both application and Kubernetes-level metrics.
 
-### 4. Install ArgoCD (GitOps Controller)
+### 4. Install ArgoCD (GitOps Deployment Controller)
 
 ```bash
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-Port Forward ArgoCD UI:
+Port-forward ArgoCD for local use:
 
 ```bash
 kubectl port-forward svc/argocd-server 9000:80 -n argocd
 ```
 
-Get ArgoCD Admin Password:
+Retrieve login credentials:
 
 ```bash
 kubectl get secrets -n argocd
@@ -166,7 +167,7 @@ echo <password> | base64 --decode
 Access ArgoCD at http://localhost:9000 (Username: admin, Password: decoded password)
 
 
-### 5. Install Ingress Controller (NGINX)
+### 5. Install NGINX Ingress Controller
 
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -174,7 +175,7 @@ helm repo update
 helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
 ```
 
-Port Forward Ingress Controller:
+Port-forward the ingress controller for local use:
 
 ```bash
 kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 8080:80
@@ -198,12 +199,12 @@ Update your /etc/hosts file:
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
 ```
 
-Cert-Manager automates certificate management for your Ingresses.
+This enables automated TLS certificate issuance for ingress routes.
 
 
 ### 8. Configure GitHub Container Registry Pull Secrets
 
-Create a GitHub Personal Access Token with read:packages and write:packages permissions.
+Generate a GitHub Personal Access Token (PAT) with read:packages and write:packages scope.
 
 ```bash
 kubectl create secret docker-registry github-container-registry \
@@ -213,77 +214,97 @@ kubectl create secret docker-registry github-container-registry \
   --docker-email=YOUR_EMAIL
 ```
 
+This secret allows Kubernetes to pull container images from ghcr.io.
 
 ---
 
 ## 🧪 Testing Network Policies
 
-Test pod-to-pod connectivity restrictions, below example should not be allowed since ingress controller serves backend, not the frontend (frontend -> backend traffic not allowed).
+This test demonstrates that frontend pods are restricted from accessing backend pods directly, validating that network policies are in effect.
 
-
-1. Get frontend pod name:
+1. Get frontend pod names:
 
 ```bash
 kubectl get pods -l app=tic-tac-toe-frontend
 ```
 
 
-2. Connect to the pod:
+2. Exec into a frontend pod:
 
 ```bash
 kubectl exec -it <frontend-pod-name> -- sh
 ```
 
-1. Get backend pod ip:
+3. Get backend pod ip:
 
 ```bash
 kubectl get pods -o wide
 ```
 
-
-3. Try curl to backend pod and google.com 
+4. Try curl to backend pod and google.com (external site to test egress):
 
 ```bash
 curl <backend-pod-ip:port>
 curl google.com
 ```
 
+✅ A failed connection to the backend to Google confirms that ingress to the backend is restricted and egress to the internet from the frontend pod is blocked.
+
 ---
 
 
 ## 📈 Monitoring and Observability
 
-Import the Grafana dashboard json file in the Grafana web UI.
+Grafana visualizes application, API, and Kubernetes metrics collected by Prometheus.
 
-Access Grafana at http://grafana.local
+- Access Grafana at http://grafana.local
+- Access Prometheus at http://prometheus.local
 
-Access Prometheus at http://prometheus.local
+- Open the Grafana UI.
+- Import the Grafana dashboard json file in the Grafana web UI.
+- View real-time data for infrastructure, API usage, and game statistics.
 
-View Kubernetes, API, and application-level metrics on custom Grafana dashboards.
+Custom dashboards include:
 
+- Kubernetes pod/node resource metrics
+- API performance and error tracking
+- Game fairness, resets, and user activity insights
 
 ---
 
 ## 🚀 Future Improvements
 
-Enforce secrets encryption at rest using a secrets manager like Hashicorp Vault or KMS
+Planned enhancements to further align with production-grade DevSecOps practices:
 
+Encrypt Kubernetes Secrets at rest using a secrets manager such as:
+- HashiCorp Vault
+- AWS/GCP KMS (Key Management Services)
+
+These improvements would strengthen secret handling beyond base64-encoded Kubernetes Secrets.
 
 ---
 
 ## 📚 References
 
-This project was initially inspired by the [DevSecOps CI/CD Pipeline Implementation](https://www.youtube.com/watch?v=Ke_Wr5zPE0A&list=PLdpzxOOAlwvLm5lWlYctUnwaFRIO2Io_5&index=7) tutorial for basic frontend and CI/CD pipeline setup.
+This project was originally based on the [DevSecOps CI/CD Pipeline Implementation](https://www.youtube.com/watch?v=Ke_Wr5zPE0A&list=PLdpzxOOAlwvLm5lWlYctUnwaFRIO2Io_5&index=7) YouTube tutorial, which provided the frontend and basic CI/CD structure.
 
-The project was significantly expanded to include:
+It was significantly expanded to include:
 
-- Backend development (FastAPI + Redis)
-- Secure multi-stage distroless Docker builds
-- GitHub Actions CI/CD pipeline (static code analysis, unit tests, Trivy scans)
-- Kubernetes manifests with Helm templating and ArgoCD
-- Secure workload hardening (HTTPS/TLS, RBAC, Secrets, Pod Security Contexts, Network Policies)
-- Observability stack with Prometheus and Grafana
-
+- A full backend API with FastAPI and Redis for state management
+    - Secure Docker builds using multi-stage and distroless images
+    - CI/CD via GitHub Actions, including:
+        - Static code analysis
+        - Unit tests
+        - Trivy security scans
+    - Kubernetes manifests refactored into Helm charts and deployed via ArgoCD
+    - Security hardening with:
+        - HTTPS/TLS
+        - RBAC
+        - Kubernetes Secrets
+        - Pod Security Contexts
+        - Calico Network Policies
+    - Full-stack observability with Prometheus and Grafana
+  
 ---
 
 
