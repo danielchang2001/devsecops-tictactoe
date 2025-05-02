@@ -276,9 +276,9 @@ Custom dashboards include:
 
 Planned enhancements to further align with production-grade DevSecOps practices:
 
-Encrypt Kubernetes Secrets at rest using a secrets manager such as:
-- HashiCorp Vault
-- AWS/GCP KMS (Key Management Services)
+- Encrypt Kubernetes Secrets at rest using a secrets manager such as:
+  - HashiCorp Vault
+  - AWS/GCP KMS (Key Management Services)
 
 These improvements would strengthen secret handling beyond base64-encoded Kubernetes Secrets.
 
