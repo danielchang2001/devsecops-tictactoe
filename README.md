@@ -1,6 +1,6 @@
 # DevSecOps Platform for TicTactoe
 
-I transformed a TicTacToe frontend app into a complete DevSecOps platform. Starting with a React frontend, I added a FastAPI backend and Redis database to persist game state across load-balanced Kubernetes pods. I built a CI/CD pipeline using GitHub Actions to automate builds, tests, and deployments, using secure multi-stage distroless Docker images for both services. Setting up CI/CD early on dramatically improved my overall local development experience as I could test my changes almost immediately.
+I transformed a TicTacToe frontend app into a complete DevSecOps platform. Starting with a React frontend, I added a FastAPI backend and Redis database to persist game state across load-balanced Kubernetes pods. I built a CI/CD pipeline using GitHub Actions to automate builds, tests, and deployments, using secure multi-stage distroless Docker images for both services. Setting up CI/CD early on dramatically improved my local development experience as I could test my changes almost immediately.
 
 The pipeline runs unit tests, linters, and Trivy scans before pushing Docker images to GitHub Container Registry. The pipeline then programmatically updates the image tags in the Helm values.yaml file using yq, commits the change back to the repository, and triggers ArgoCD to deploy the updated images — completing the GitOps loop. Helm charts were used to enable modular, reusable infrastructure definitions.
 
