@@ -32,7 +32,7 @@ Frontend: ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-
 ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
 
 - GitHub Actions runs unit tests, linters, and vulnerability scans (via Trivy) on every push.
-- If checks pass, secure multi-stage distroless Docker images are built for the frontend and backend.
+- If checks pass, secure multi-stage distroless Docker images are built using the Dockerfiles I wrote for the frontend and backend.
 - Images are pushed to GitHub Container Registry (GHCR).
 - A script updates the Helm values.yaml file with the new image tags using yq and commits the change.
 - ArgoCD detects the change and automatically syncs the updated manifests to the local Kubernetes (KIND) cluster.
