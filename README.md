@@ -306,19 +306,19 @@ This project was originally based on the [DevSecOps CI/CD Pipeline Implementatio
 It was significantly expanded to include:
 
 - A full backend API with FastAPI and Redis for state management
-    - Secure Docker builds using multi-stage and distroless images
-    - CI/CD via GitHub Actions, including:
-        - Static code analysis
-        - Unit tests
-        - Trivy security scans
-    - Kubernetes manifests refactored into Helm charts and deployed via ArgoCD
-    - Security hardening with:
-        - HTTPS/TLS
-        - RBAC
-        - Kubernetes Secrets
-        - Pod Security Contexts
-        - Calico Network Policies
-    - Full-stack observability with Prometheus and Grafana
+- Secure Docker builds using multi-stage and distroless images
+- CI/CD via GitHub Actions, including:
+    - Static code analysis
+    - Unit tests
+    - Trivy security scans
+- Kubernetes manifests refactored into Helm charts and deployed via ArgoCD
+- Security hardening with:
+    - HTTPS/TLS
+    - RBAC
+    - Kubernetes Secrets
+    - Pod Security Contexts
+    - Calico Network Policies
+- Full-stack observability with Prometheus and Grafana
   
 ---
 
