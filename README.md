@@ -1,17 +1,3 @@
-# DevSecOps Platform for TicTactoe
-
-In this personal project, I transformed a simple TicTacToe React frontend into a full-fledged DevSecOps platform. I added a FastAPI backend and a Redis database to persist game state across load-balanced Kubernetes pods. Early on, I set up a CI/CD pipeline using GitHub Actions to automate builds, tests, and deployments — dramatically improving development speed by letting me test changes on a live Kubernetes cluster in seconds.
-
-The pipeline runs unit tests, linters, and Trivy scans on every push. It then builds secure multi-stage distroless Docker images, pushes them to GitHub Container Registry, and programmatically updates Helm image tags using yq. This change is committed back to the repo, triggering ArgoCD to sync and deploy the updated application — completing the GitOps loop.
-
-Security is enforced through HTTPS/TLS termination with NGINX Ingress and Cert-Manager, Kubernetes Secrets protected by RBAC-bound ServiceAccounts, PodSecurityContexts for non-root containers, and Calico NetworkPolicies to restrict pod-to-pod traffic by default.
-
-For observability, I exposed custom /metrics endpoints in the backend and integrated Prometheus and Grafana to visualize key metrics like win ratios, fairness scores, invalid moves, API performance, and cluster resource usage — simulating real-world SRE monitoring workflows.
-
-![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
-
----
-
 ## 📖 Table of Contents
 
 - [⚙️ DevSecOps CI/CD Pipeline](#️-devsecops-cicd-pipeline)
@@ -24,6 +10,20 @@ For observability, I exposed custom /metrics endpoints in the backend and integr
 - [📈 Monitoring and Observability](#-monitoring-and-observability)
 - [🚀 Future Improvements](#-future-improvements)
 - [📚 References](#-references)
+
+---
+
+# DevSecOps Platform for TicTactoe
+
+In this personal project, I transformed a simple TicTacToe React frontend into a full-fledged DevSecOps platform. I added a FastAPI backend and a Redis database to persist game state across load-balanced Kubernetes pods. Early on, I set up a CI/CD pipeline using GitHub Actions to automate builds, tests, and deployments — dramatically improving development speed by letting me test changes on a live Kubernetes cluster in seconds.
+
+The pipeline runs unit tests, linters, and Trivy scans on every push. It then builds secure multi-stage distroless Docker images, pushes them to GitHub Container Registry, and programmatically updates Helm image tags using yq. This change is committed back to the repo, triggering ArgoCD to sync and deploy the updated application — completing the GitOps loop.
+
+Security is enforced through HTTPS/TLS termination with NGINX Ingress and Cert-Manager, Kubernetes Secrets protected by RBAC-bound ServiceAccounts, PodSecurityContexts for non-root containers, and Calico NetworkPolicies to restrict pod-to-pod traffic by default.
+
+For observability, I exposed custom /metrics endpoints in the backend and integrated Prometheus and Grafana to visualize key metrics like win ratios, fairness scores, invalid moves, API performance, and cluster resource usage — simulating real-world SRE monitoring workflows.
+
+![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
 ---
 
