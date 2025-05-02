@@ -1,12 +1,12 @@
 # DevSecOps Platform for TicTactoe
 
-I took a TicTacToe frontend app and turned it into a complete DevSecOps platform. First, I extended a frontend React app and added a FastAPI backend and Redis database for state persistence across K8s pods. Next, I set up a CI/CD pipeline with GitHub Actions to automate deployments of any changes made to the project. I wrote Dockerfiles for the frontend and backend and configured the pipeline to build and deploy Docker images using secure multi-stage builds and distroless base images.
+I transformed a TicTacToe frontend app into a complete DevSecOps platform. Starting with a React frontend, I added a FastAPI backend and Redis database to persist game state across load-balanced Kubernetes pods. I built a CI/CD pipeline using GitHub Actions to automate builds, tests, and deployments, using secure multi-stage distroless Docker images for both services.
 
-I integrated Trivy into the pipeline to scan all images for vulnerabilities and configured unit tests and linters to ensure code quality. After building and scanning, the CI job pushes the images to GitHub Container Registry, and then automatically updates Helm image tags via a script and commits back to the repo.
+The pipeline runs unit tests, linters, and Trivy scans before pushing Docker images to GitHub Container Registry. The pipeline then programmatically updates the image tags in the Helm values.yaml file using yq, commits the change back to the repository, and triggers ArgoCD to deploy the updated images — completing the GitOps loop. Helm charts were used to enable modular, reusable infrastructure definitions.
 
-I deployed the application to a Kubernetes KIND cluster using Helm charts and implemented GitOps with ArgoCD for declarative and automated deployments. For security, I enforced HTTPS/TLS termination, secured sensitive data with Kubernetes Secrets, applied least-privilege RBAC with ServiceAccounts, and hardened workloads with PodSecurityContexts and Calico NetworkPolicies to restrict pod-to-pod communication.
+Security was enforced through HTTPS/TLS termination via NGINX Ingress and Cert-Manager, Secrets and RBAC-controlled ServiceAccounts, PodSecurityContexts for non-root containers, and Calico NetworkPolicies for least-privilege, pod-level communication.
 
-Finally, I integrated Prometheus and Grafana for observability, exposing custom /metrics from the backend API and building Grafana dashboards to monitor application-level statistics (win/loss rates, fairness/bias, invalid moves), infrastructure usage (CPU/memory), and API health — simulating real-world SRE monitoring workflows.
+For observability, I integrated Prometheus and Grafana, exposing custom /metrics from the backend API. Dashboards visualize app-level stats (win rates, fairness, invalid moves), infrastructure usage (CPU/memory), and API performance — emulating real-world SRE practices.
 
 ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
