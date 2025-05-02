@@ -20,6 +20,19 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 
 ---
 
+## ⚙️ DevSecOps CI/CD Pipeline
+
+![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
+
+**CI/CD Flow:**
+1. **GitHub Actions CI/CD** runs tests and linters on every push.
+2. Docker images are built and scanned using **Trivy** for vulnerabilities.
+3. Images are pushed to a private **GitHub Container Registry (GHCR)**.
+4. The Helm `values.yaml` file is automatically updated with new image tags.
+5. **ArgoCD** detects changes and deploys to a local Kubernetes (KIND) cluster using GitOps.
+
+---
+
 ## 🛠 TicTacToe DevSecOps Architecture
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
@@ -32,19 +45,6 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 - Sensitive environment variables are injected via Kubernetes Secrets.
 - RBAC and PodSecurityContext restrict pod access and enforce non-root containers.
 
-
----
-
-## ⚙️ DevSecOps CI/CD Pipeline
-
-![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
-
-**CI/CD Flow:**
-1. **GitHub Actions CI/CD** runs tests and linters on every push.
-2. Docker images are built and scanned using **Trivy** for vulnerabilities.
-3. Images are pushed to a private **GitHub Container Registry (GHCR)**.
-4. The Helm `values.yaml` file is automatically updated with new image tags.
-5. **ArgoCD** detects changes and deploys to a local Kubernetes (KIND) cluster using GitOps.
 
 ---
 
