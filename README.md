@@ -23,13 +23,13 @@ Security is enforced through HTTPS/TLS termination with NGINX Ingress and Cert-M
 
 For observability, I exposed custom /metrics endpoints in the backend and integrated Prometheus and Grafana to visualize key metrics like win ratios, fairness scores, invalid moves, API performance, and cluster resource usage — simulating real-world SRE monitoring workflows.
 
-Frontend: ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
+- Frontend: ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
 ---
 
 ## ⚙️ DevSecOps CI/CD Pipeline
 
-![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
+- ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
 
 - GitHub Actions runs unit tests, linters, and vulnerability scans (via Trivy) on every push.
 - If checks pass, secure multi-stage distroless Docker images are built using the Dockerfiles I wrote for the frontend and backend.
@@ -41,12 +41,12 @@ Frontend: ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-
 
 ## 🛠 TicTacToe DevSecOps Architecture
 
-![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
+- ![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
 
 - All user traffic enters through an NGINX Ingress Controller with HTTPS/TLS termination (via Cert-Manager).
 - Prometheus and Grafana are served to monitoring admins using their own respective NGINX Ingress Controllers.
-- The FastAPI backend exposes "/api" endpoints for the frontend and a "/metrics" endpoint for Prometheus to scrape.
-- Kubernetes NetworkPolicies (Calico) strictly control pod-to-pod communication based on least privilege.
+- The FastAPI backend exposes "/api" endpoints for the frontend and a "/metrics" endpoint for Prometheus.
+- Backend pods communicate with redis pods to store and load game state.
 - Kubernetes Secrets store sensitive environment variables like Redis host name and password.
 - RBAC and PodSecurityContexts limit pod access and enforce non-root containers with read-only filesystems.
 
@@ -87,32 +87,32 @@ Prometheus scrapes metrics from both the Kubernetes cluster and the application.
 
 **📦 Infrastructure Metrics**
 
-![image](https://github.com/user-attachments/assets/0909f021-0859-4f65-9a85-196b7f091f11)
+- ![image](https://github.com/user-attachments/assets/0909f021-0859-4f65-9a85-196b7f091f11)
 
-Monitors:
-- Pod-level CPU and memory usage
-- Node-level resource consumption (CPU & RAM)
-- Pod uptime and restart counts
+- Monitors:
+  - Pod-level CPU and memory usage
+  - Node-level resource consumption (CPU & RAM)
+  - Pod uptime and restart counts
   
 **🔌 API Metrics**
 
-![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
+- ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
 
-Monitors:
-- API request volume and latency
-- Error rates, including invalid moves and 5xx responses
-- Payload size trends across requests and responses
+- Monitors:
+  - API request volume and latency
+  - Error rates, including invalid moves and 5xx responses
+  - Payload size trends across requests and responses
 
 **🎮 App Metrics**
 
-![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
+- ![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
 
-Monitors:
-- Win/draw ratios to measure gameplay outcomes
-- Fairness indicator, monitoring imbalance between players over time
-- Game reset frequency, useful for detecting user frustration or abuse
-- Invalid move attempts (e.g., /api/move/99) for bug detection and potential exploit attempts
-- Total games played, providing insight into app engagement and volume
+- Monitors:
+  - Win/draw ratios to measure gameplay outcomes
+  - Fairness indicator, monitoring imbalance between players over time
+  - Game reset frequency, useful for detecting user frustration or abuse
+  - Invalid move attempts (e.g., /api/move/99) for bug detection and potential exploit attempts
+  - Total games played, providing insight into app engagement and volume
 
 ---
 
