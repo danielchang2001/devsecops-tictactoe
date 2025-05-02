@@ -1,6 +1,12 @@
 # DevSecOps Platform for TicTactoe
 
-A production-grade DevSecOps platform that deploys a secure, observable, and GitOps-driven TicTacToe application to Kubernetes using industry-standard tools like GitHub Actions, ArgoCD, Prometheus, Grafana, and Calico NetworkPolicies.
+I took a TicTacToe frontend app and turned it into a complete DevSecOps platform. First, I extended a frontend React app and added a FastAPI backend and Redis database for state persistence across K8s pods. Next, I set up a CI/CD pipeline with GitHub Actions to automate deployments of any changes made to the project. I wrote Dockerfiles for the frontend and backend and configured the pipeline to build and deploy Docker images using secure multi-stage builds and distroless base images.
+
+I integrated Trivy into the pipeline to scan all images for vulnerabilities and configured unit tests and linters to ensure code quality. After building and scanning, the CI job pushes the images to GitHub Container Registry, and then automatically updates Helm image tags via a script and commits back to the repo.
+
+I deployed the application to a Kubernetes KIND cluster using Helm charts and implemented GitOps with ArgoCD for declarative and automated deployments. For security, I enforced HTTPS/TLS termination, secured sensitive data with Kubernetes Secrets, applied least-privilege RBAC with ServiceAccounts, and hardened workloads with PodSecurityContexts and Calico NetworkPolicies to restrict pod-to-pod communication.
+
+Finally, I integrated Prometheus and Grafana for observability, exposing custom /metrics from the backend API and building Grafana dashboards to monitor application-level statistics (win/loss rates, fairness/bias, invalid moves), infrastructure usage (CPU/memory), and API health — simulating real-world SRE monitoring workflows.
 
 ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
@@ -28,8 +34,8 @@ This project demonstrates a secure, production-grade DevSecOps workflow using Ku
 1. **GitHub Actions CI/CD** runs tests and linters on every push.
 2. Docker images are built and scanned using **Trivy** for vulnerabilities.
 3. Images are pushed to a private **GitHub Container Registry (GHCR)**.
-4. The Helm `values.yaml` file is automatically updated with new image tags.
-5. **ArgoCD** detects changes and deploys to a local Kubernetes (KIND) cluster using GitOps.
+4. The Helm `values.yaml` file is updated with new image tags stored in GHCR.
+5. **ArgoCD** detects changes to values.yaml and deploys K8s manifests to a local (KIND) cluster using GitOps.
 
 ---
 
