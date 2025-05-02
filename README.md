@@ -12,6 +12,21 @@ For observability, I exposed custom /metrics endpoints in the backend and integr
 
 ---
 
+## 📖 Table of Contents
+
+- [⚙️ DevSecOps CI/CD Pipeline](#️-devsecops-cicd-pipeline)
+- [🛠 TicTacToe DevSecOps Architecture](#-tictactoe-devsecops-architecture)
+- [🔐 Security Best Practices Implemented](#-security-best-practices-implemented)
+- [🧰 Tech Stack](#-tech-stack)
+- [📊 Grafana Dashboards (Kubernetes, API, Application Metrics)](#-grafana-dashboards-kubernetes-api-application-metrics)
+- [⚙️ Setup Instructions](#️-setup-instructions)
+- [🧪 Testing Network Policies](#-testing-network-policies)
+- [📈 Monitoring and Observability](#-monitoring-and-observability)
+- [🚀 Future Improvements](#-future-improvements)
+- [📚 References](#-references)
+
+---
+
 ## ⚙️ DevSecOps CI/CD Pipeline
 
 ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
