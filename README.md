@@ -12,20 +12,6 @@ For observability, I integrated Prometheus and Grafana, exposing custom /metrics
 
 ---
 
-## 📚 Project Overview
-
-This project demonstrates a secure, production-grade DevSecOps workflow using Kubernetes (KIND), GitHub Actions, ArgoCD, Docker, Prometheus, Grafana, and Kubernetes security best practices (Secrets, RBAC, TLS, NetworkPolicies).
-
-- **Frontend**: React app served via Ingress
-- **Backend**: FastAPI with Redis state persistence, Prometheus metrics, and Unit Tests
-- **State Management**: Redis database
-- **CI/CD**: GitHub Actions pipelines with unit tests, static code analysis, and Trivy image scanning
-- **Deployment**: GitOps using ArgoCD and Helm Charts
-- **Security**: Calico CNI with NetworkPolicies for pod-to-pod access control, podSecurityContexts for container permissions, and RBAC for protecting Kubernetes Secrets
-- **Monitoring**: Prometheus and Grafana served via Ingress
-
----
-
 ## ⚙️ DevSecOps CI/CD Pipeline
 
 ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
