@@ -45,7 +45,7 @@ Frontend: ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-
 
 - All user traffic enters through an NGINX Ingress Controller with HTTPS/TLS termination (via Cert-Manager).
 - Prometheus and Grafana are served to monitoring admins using their own respective NGINX Ingress Controllers.
-- The FastAPI backend exposes /api endpoints for the frontend and a /metrics endpoint for Prometheus to scrape.
+- The FastAPI backend exposes "/api" endpoints for the frontend and a "/metrics" endpoint for Prometheus to scrape.
 - Kubernetes NetworkPolicies (Calico) strictly control pod-to-pod communication based on least privilege.
 - Kubernetes Secrets store sensitive environment variables like Redis host name and password.
 - RBAC and PodSecurityContexts limit pod access and enforce non-root containers with read-only filesystems.
