@@ -118,7 +118,7 @@ Prometheus scrapes metrics from both the Kubernetes cluster and the application.
 
 ## ⚙️ Setup Instructions
 
-This project runs locally on a Kubernetes cluster using KIND (Kubernetes IN Docker). It includes a fully integrated DevSecOps pipeline with Calico CNI, GitOps via ArgoCD, TLS with Cert-Manager, and observability via Prometheus + Grafana.
+This project runs locally on a Kubernetes cluster using KIND (Kubernetes IN Docker).
 
 ### 1. Create a KIND Cluster with Calico Networking
 
