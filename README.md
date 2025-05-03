@@ -49,7 +49,7 @@ To simulate real-world SRE workflows, I added full-stack observability:
   - API performance (latency, errors)
   - Kubernetes resource usage (CPU, memory, pod restarts)
 
-This project simulates the tooling and workflows of a production-grade DevSecOps pipeline, integrating CI/CD, GitOps, container security, Kubernetes hardening, and observability.
+This project simulates the tooling and workflows of a production-like DevSecOps pipeline, integrating CI/CD, GitOps, Kubernetes, securtiy, and observability.
 
 ---
 
