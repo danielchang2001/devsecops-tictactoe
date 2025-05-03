@@ -86,7 +86,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 - RBAC roles bound to ServiceAccounts restrict pod access to Secrets and other resources.
 - Calico NetworkPolicies control pod-to-pod network communication using least-privilege principles.
 - Trivy image scans integrated into the CI/CD pipeline to detect vulnerabilities before deployment.
-- ArgoCD GitOps model with limited cluster permissions ensures secure and auditable deployments.
+- ArgoCD GitOps model with limited cluster permissions ensures secure deployments.
 
 ---
 
