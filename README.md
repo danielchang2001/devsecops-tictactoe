@@ -111,6 +111,8 @@ This project simulates the tooling and workflows of a production-grade DevSecOps
 
 Prometheus scrapes metrics from both the Kubernetes cluster and the application. Grafana uses those metrics to populate custom dashboards that provide real-time observability.
 
+---
+
 **📦 Infrastructure Metrics**
 
 ![image](https://github.com/user-attachments/assets/0909f021-0859-4f65-9a85-196b7f091f11)
@@ -119,7 +121,9 @@ Prometheus scrapes metrics from both the Kubernetes cluster and the application.
   - Pod-level CPU and memory usage
   - Node-level resource consumption (CPU & RAM)
   - Pod uptime and restart counts
-  
+
+---
+
 **🔌 API Metrics**
 
 ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
@@ -128,6 +132,8 @@ Prometheus scrapes metrics from both the Kubernetes cluster and the application.
   - API request volume and latency
   - Error rates, including invalid moves and 5xx responses
   - Payload size trends across requests and responses
+
+---
 
 **🎮 App Metrics**
 
