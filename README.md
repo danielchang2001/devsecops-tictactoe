@@ -24,7 +24,7 @@ Application Tiers:
 - **Backend**: FastAPI (Python)
 - **Database**: Redis
 
-After decoupling the application into these three tiers and verifying functionality, I containerized the frontend and backend using multi-stage Docker builds and Distroless images to reduce image size and enhance container security.
+After decoupling the application into these three tiers and verifying functionality using unit tests, I containerized the frontend and backend using multi-stage Docker builds and Distroless images to reduce image size and enhance container security.
 
 Next, I implemented a CI/CD pipeline using GitHub Actions to automate testing, security scanning, and deployment. On every push:
 - Unit tests and linting are run
