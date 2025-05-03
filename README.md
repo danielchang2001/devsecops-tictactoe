@@ -235,8 +235,16 @@ Update your /etc/hosts file:
 127.0.0.1 prometheus.local
 ```
 
+### 7. Access Monitoring Resources
 
-### 7. Install Cert-Manager for TLS Certificates
+- Access Grafana at http://grafana.local
+- Access Prometheus at http://prometheus.local
+
+1. Open the Grafana UI.
+2. Import the Grafana dashboard json file in the Grafana web UI.
+3. View real-time data for infrastructure, API usage, and game statistics.
+
+### 8. Install Cert-Manager for TLS Certificates
 
 ```bash
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
@@ -245,7 +253,7 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 This enables automated TLS certificate issuance for ingress routes.
 
 
-### 8. Configure GitHub Container Registry Pull Secrets
+### 9. Configure GitHub Container Registry Pull Secrets
 
 Generate a GitHub Personal Access Token (PAT) with read:packages and write:packages scope.
 
@@ -292,26 +300,6 @@ curl google.com
 ```
 
 ✅ A failed connection to the backend to Google confirms that ingress to the backend is restricted and egress to the internet from the frontend pod is blocked.
-
----
-
-
-## 📈 Monitoring and Observability
-
-Grafana visualizes application, API, and Kubernetes metrics collected by Prometheus.
-
-- Access Grafana at http://grafana.local
-- Access Prometheus at http://prometheus.local
-
-- Open the Grafana UI.
-- Import the Grafana dashboard json file in the Grafana web UI.
-- View real-time data for infrastructure, API usage, and game statistics.
-
-Custom dashboards include:
-
-- Kubernetes pod/node resource metrics
-- API performance and error tracking
-- Game fairness, resets, and user activity insights
 
 ---
 
