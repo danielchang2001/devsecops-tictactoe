@@ -7,7 +7,6 @@
 - [📊 Grafana Dashboards (Kubernetes, API, Application Metrics)](#-grafana-dashboards-kubernetes-api-application-metrics)
 - [⚙️ Setup Instructions](#️-setup-instructions)
 - [🧪 Testing Network Policies](#-testing-network-policies)
-- [📈 Monitoring and Observability](#-monitoring-and-observability)
 - [🚀 Future Improvements](#-future-improvements)
 - [📚 References](#-references)
 
