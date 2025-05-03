@@ -245,7 +245,7 @@ Update your /etc/hosts file:
 - Access Prometheus at http://prometheus.local
 
 1. Open the Grafana UI.
-2. Import the Grafana dashboard json file in the Grafana web UI.
+2. Import the Grafana dashboard json file (TicTacToe_Grafana.json) in the Grafana web UI.
 3. View real-time data for infrastructure, API usage, and game statistics.
 
 ### 8. Install Cert-Manager for TLS Certificates
