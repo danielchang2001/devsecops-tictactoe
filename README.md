@@ -13,6 +13,7 @@
 ---
 
 # DevSecOps Platform for TicTactoe
+![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
 The goal of this project was to gain hands-on experience implementing real-world DevSecOps practices across the lifecycle of a containerized web application.
 
@@ -49,8 +50,6 @@ To simulate real-world SRE workflows, I added full-stack observability:
   - Kubernetes resource usage (CPU, memory, pod restarts)
 
 This project simulates the tooling and workflows of a production-grade DevSecOps pipeline, integrating CI/CD, GitOps, container security, Kubernetes hardening, and observability.
-
-![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
 ---
 
