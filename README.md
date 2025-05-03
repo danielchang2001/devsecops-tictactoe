@@ -17,31 +17,39 @@
 
 The goal of this project was to gain hands-on experience implementing real-world DevSecOps practices across the lifecycle of a containerized web application.
 
-Starting with the basic frontend source code for a React TicTacToe app, I first transitioned it into a traditional 3 tier web app (frontend, backend, database). This helped persist game state across load balanced Kubernetes pods and provided more detailed monitoring for the overall application.
+Starting with the basic frontend source code for a React-based TicTacToe game, I transformed it into a traditional three-tier architecture to support state persistence, scalability, and observability.
 
-3 Tiers:
-- React frontend
-- Python FastAPI backend
-- Redis database
+Application Tiers:
+- **Frontend**: React (Vite)
+- **Backend**: FastAPI (Python)
+- **Database**: Redis
 
-Once the application was decoupled into the 3 tiers and was functional, I moved onto setting up Dockerfiles for the frontend and backend respectively. I utilized multi-stage Docker builds and Distroless images to reduce final image size and improve container security.
+After decoupling the application into these three tiers and verifying functionality, I containerized the frontend and backend using multi-stage Docker builds and Distroless images to reduce image size and enhance container security.
 
-Next, I implemented a CI/CD pipeline using GitHub Actions to automate testing, image building, and deployment. On every push, the pipeline runs unit tests, performs static code analysis (linting), and builds Docker images using custom multi-stage Dockerfiles.
+Next, I implemented a CI/CD pipeline using GitHub Actions to automate testing, security scanning, and deployment. On every push:
+- Unit tests and linting are run
+- Docker images are built and scanned with Trivy
+- Clean builds are published to GitHub Container Registry (GHCR)
 
-After the build, each image is scanned with Trivy for security vulnerabilities. If the scan passes, the images are published to the GitHub Container Registry (GHCR). A Bash script then retrieves the latest image tags and updates them in the Helm values.yaml file.
+A custom Bash script retrieves the updated image tags from GHCR and injects them into the Helm values.yaml file.
 
-Using Helm, I templated Kubernetes manifests for consistency and flexibility. Once the values.yaml file is updated, ArgoCD automatically detects the change, renders the manifests via Helm, and deploys the new containers to a local KIND cluster.
+Using Helm, I templated Kubernetes manifests for consistency and maintainability. ArgoCD automatically detects changes to the Helm values, renders the manifests, and deploys the application to a local Kubernetes cluster (KIND).
 
-Once the core application was running on Kubernetes, I focused on hardening the cluster’s networking and workload security. This included:
-- HTTPS/TLS termination for NGINX Ingress Controllers using Cert-Manager
-- Securing sensitive config values (e.g., Redis credentials) using Kubernetes Secrets with RBAC-bound ServiceAccounts
-- Enforcing non-root container execution through PodSecurityContexts
-- Implementing Calico NetworkPolicies to enforce strict ingress/egress controls for pod-to-pod communication, following the principle of least privilege
+Once the app was running in Kubernetes, I focused on networking and workload security:
+- **HTTPS/TLS termination** for NGINX Ingress Controllers using **Cert-Manager**
+- **Kubernetes Secrets** with **RBAC-bound ServiceAccounts** for credentials like Redis passwords
+- **PodSecurityContexts** to enforce non-root container execution
+- **Calico NetworkPolicies** for strict ingress/egress controls, enforcing least privilege between pods
 
-Finally, I implemented observability and monitoring to gain real-time insight into both the application and the infrastructure. This included:
-- Exposing custom application metrics from the backend via a /metrics endpoint
--Configuring Prometheus with a ServiceMonitor to scrape metrics from the API
-- Designing a Grafana dashboard to visualize key metrics such as win ratios, fairness indicators, API latency/errors, and Kubernetes resource usage — simulating a real-world SRE monitoring workflow
+To simulate real-world SRE workflows, I added full-stack observability:
+- Custom app-level metrics exposed via a /metrics endpoint in the backend
+- Prometheus configured with a ServiceMonitor to scrape those metrics
+- Grafana dashboard visualizing:
+  - Game stats (win ratios, fairness indicators, invalid moves)
+  - API performance (latency, errors)
+  - Kubernetes resource usage (CPU, memory, pod restarts)
+
+This project simulates the tooling and workflows of a production-grade DevSecOps pipeline, integrating CI/CD, GitOps, container security, Kubernetes hardening, and observability — end to end.
 
 ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
