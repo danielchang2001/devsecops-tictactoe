@@ -99,7 +99,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 | CI/CD          | GitHub Actions                              |
 | GitOps         | ArgoCD for declarative deployments          |
 | Monitoring     | Prometheus & Grafana                        |
-| Security       | Trivy, K8s Secrets, RBAC, Calico NetworkPolicies |
+| Security       | Trivy, K8s Secrets, RBAC, Calico NetworkPolicies, PodSecurityContexts |
 | Backend        | FastAPI (Python), Redis for state management|
 | Frontend       | React (Vite)                                |
 | Packaging      | Helm charts (custom deployment config)      |
