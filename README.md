@@ -36,10 +36,10 @@ A custom Bash script retrieves the updated image tags from GHCR and injects them
 Using Helm, I templated Kubernetes manifests for consistency and maintainability. ArgoCD automatically detects changes to the Helm values, renders the manifests, and deploys the application to a local Kubernetes cluster (KIND).
 
 Once the app was running in Kubernetes, I focused on networking and workload security:
-- **HTTPS/TLS termination** for NGINX Ingress Controllers using **Cert-Manager**
-- **Kubernetes Secrets** with **RBAC-bound ServiceAccounts** for credentials like Redis passwords
-- **PodSecurityContexts** to enforce non-root container execution
-- **Calico NetworkPolicies** for strict ingress/egress controls, enforcing least privilege between pods
+- HTTPS/TLS termination for NGINX Ingress Controllers using Cert-Manager
+- Kubernetes Secrets with RBAC-bound ServiceAccounts for credentials like Redis passwords
+- PodSecurityContexts to enforce non-root container execution
+- Calico NetworkPolicies for strict ingress/egress controls, enforcing least privilege between pods
 
 To simulate real-world SRE workflows, I added full-stack observability:
 - Custom app-level metrics exposed via a /metrics endpoint in the backend
