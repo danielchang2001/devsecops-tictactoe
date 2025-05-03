@@ -289,11 +289,13 @@ Custom dashboards include:
 
 ## 🚀 Future Improvements
 
-Planned enhancements to further align with production-grade DevSecOps practices:
+Enhancements that could further align with production-grade DevSecOps practices:
 
+- Transition from a local KIND cluster to something like EKS
+- Use terraform to declaratively provision the project onto AWS
 - Encrypt Kubernetes Secrets at rest using a secrets manager such as:
   - HashiCorp Vault
-  - AWS/GCP KMS (Key Management Services)
+  - AWS KMS (Key Management Services)
 
 These improvements would strengthen secret handling beyond base64-encoded Kubernetes Secrets.
 
