@@ -241,12 +241,12 @@ Update your /etc/hosts file:
 
 ### 7. Access the Application 
 
-- Access the application at http://tic-tac-toe.local
+- Access the application at https://tic-tac-toe.local
 
 ### 8. Access Monitoring Resources
 
-- Access Grafana at http://grafana.local
-- Access Prometheus at http://prometheus.local
+- Access Grafana at https://grafana.local
+- Access Prometheus at https://prometheus.local
 
 1. Open the Grafana UI.
 2. Import the Grafana dashboard json file (TicTacToe_Grafana.json) in the Grafana web UI.
