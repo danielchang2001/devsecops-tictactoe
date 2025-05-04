@@ -1,12 +1,12 @@
 frontend:
   replicaCount: 3
-  image: ghcr.io/danielchang2001/devsecops-tictactoe-frontend:sha-3b4305047be774231dc0847f9a40a4c32ea35cc8
+  image: ghcr.io/danielchang2001/devsecops-tictactoe-frontend:sha-523a9cef4832dc0089890f2d943a503e794c860e
   containerPort: 80
   servicePort: 80
   serviceType: ClusterIP
 backend:
   replicaCount: 2
-  image: ghcr.io/danielchang2001/devsecops-tictactoe-backend:sha-3b4305047be774231dc0847f9a40a4c32ea35cc8
+  image: ghcr.io/danielchang2001/devsecops-tictactoe-backend:sha-523a9cef4832dc0089890f2d943a503e794c860e
   containerPort: 8000
   servicePort: 8000
   serviceType: ClusterIP
