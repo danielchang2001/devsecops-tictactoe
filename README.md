@@ -311,13 +311,11 @@ curl google.com
 
 Enhancements that could further align with production-grade DevSecOps practices:
 
-- Transition from a local KIND cluster to something like EKS
-- Use terraform to declaratively provision the project onto AWS
-- Encrypt Kubernetes Secrets at rest using a secrets manager such as:
+- Transition from a local KIND cluster to a Cloud Native platform like EKS
+- Use Terraform to declaratively provision the project onto AWS
+- Encrypt Kubernetes Secrets at rest using a secrets manager to strengthen secret handling beyond base64-encoded Kubernetes Secrets. For example, using:
   - HashiCorp Vault
   - AWS KMS (Key Management Services)
-
-These improvements would strengthen secret handling beyond base64-encoded Kubernetes Secrets.
 
 ---
 
