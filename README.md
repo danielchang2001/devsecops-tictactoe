@@ -239,7 +239,11 @@ Update your /etc/hosts file:
 127.0.0.1 prometheus.local
 ```
 
-### 7. Access Monitoring Resources
+### 7. Access the Application 
+
+- Access the application at http://tic-tac-toe.local
+
+### 8. Access Monitoring Resources
 
 - Access Grafana at http://grafana.local
 - Access Prometheus at http://prometheus.local
@@ -248,7 +252,7 @@ Update your /etc/hosts file:
 2. Import the Grafana dashboard json file (TicTacToe_Grafana.json) in the Grafana web UI.
 3. View real-time data for infrastructure, API usage, and game statistics.
 
-### 8. Install Cert-Manager for TLS Certificates
+### 9. Install Cert-Manager for TLS Certificates
 
 ```bash
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
@@ -257,7 +261,7 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 This enables automated TLS certificate issuance for ingress routes.
 
 
-### 9. Configure GitHub Container Registry Pull Secrets
+### 10. Configure GitHub Container Registry Pull Secrets
 
 Generate a GitHub Personal Access Token (PAT) with read:packages and write:packages scope.
 
