@@ -74,7 +74,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## Grafana Dashboards (Kubernetes, API, Application Metrics)
+## Observability
 
 Prometheus scrapes metrics from both the Kubernetes cluster and the application. Grafana uses those metrics to populate custom dashboards that provide real-time observability.
 
