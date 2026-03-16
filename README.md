@@ -8,33 +8,6 @@ Application Tiers:
 - **Backend**: FastAPI (Python)
 - **Database**: Redis
 
-After decoupling the application into these three tiers and verifying functionality using unit tests, I containerized the frontend and backend using multi-stage Docker builds and Distroless images to reduce image size and enhance container security.
-
-Next, I implemented a CI/CD pipeline using GitHub Actions to automate testing, security scanning, and deployment. On every push:
-- Unit tests and linting are run
-- Docker images are built and scanned with Trivy
-- Clean builds are published to GitHub Container Registry (GHCR)
-
-A custom Bash script retrieves the updated image tags from GHCR and injects them into the Helm values.yaml file.
-
-Using Helm, I templated Kubernetes manifests for consistency and maintainability. ArgoCD automatically detects changes to the Helm values, renders the manifests, and deploys the application to a local Kubernetes cluster (KIND).
-
-Once the app was running in Kubernetes, I focused on networking and workload security:
-- HTTPS/TLS termination for NGINX Ingress Controllers using Cert-Manager
-- Kubernetes Secrets with RBAC-bound ServiceAccounts for credentials like Redis passwords
-- PodSecurityContexts to enforce non-root container execution
-- Calico NetworkPolicies for strict ingress/egress controls, enforcing least privilege between pods
-
-To simulate real-world SRE workflows, I added full-stack observability:
-- Custom app-level metrics exposed via a /metrics endpoint in the backend
-- Prometheus configured with a ServiceMonitor to scrape those metrics
-- Grafana dashboard visualizing:
-  - Game stats (win ratios, fairness indicators, invalid moves)
-  - API performance (latency, errors)
-  - Kubernetes resource usage (CPU, memory, pod restarts)
-
-This project simulates the tooling and workflows of a production-like DevSecOps pipeline, integrating CI/CD, GitOps, Kubernetes, securtiy, and observability.
-
 ---
 
 ## CI/CD
