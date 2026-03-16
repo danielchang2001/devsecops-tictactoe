@@ -1,7 +1,7 @@
 # Overview
 ![Frontend](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
-This project demonstrates the implementation of a full-stack DevSecOps pipeline for a containerized application. It transforms a standard React-based game into a 3-tier architecture with state persistence, observability, and production-grade security controls.
+This project demonstrates the implementation of a full-stack DevSecOps pipeline for a containerized application. It transforms a standard React-based game into a 3-tier architecture with state persistence, observability, and security.
 
 Application Tiers:
 - **Frontend**: React (Vite)
