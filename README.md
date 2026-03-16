@@ -1,9 +1,7 @@
 # Overview
-![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
+![Frontend](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
-The goal of this project was to gain hands-on experience implementing real-world DevSecOps practices across the lifecycle of a containerized web application.
-  
-Starting with the basic frontend source code for a React-based TicTacToe game, I transformed it into a traditional three-tier architecture to support state persistence, scalability, and observability.
+This project demonstrates the implementation of a full-stack DevSecOps pipeline for a containerized application. It transforms a standard React-based game into a 3-tier architecture with state persistence, observability, and production-grade security controls.
 
 Application Tiers:
 - **Frontend**: React (Vite)
@@ -51,7 +49,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## Technical Implementation
+## Architecture
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
 
@@ -76,23 +74,6 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## Tech Stack
-
-| Area           | Tools/Tech Used                            |
-|----------------|---------------------------------------------|
-| Containerization | Docker (multi-stage builds, distroless images) |
-| Orchestration  | Kubernetes (local setup via KIND)           |
-| CI/CD          | GitHub Actions                              |
-| GitOps         | ArgoCD for declarative deployments          |
-| Monitoring     | Prometheus & Grafana                        |
-| Security       | Trivy, K8s Secrets, RBAC, Calico NetworkPolicies, PodSecurityContexts |
-| Backend        | FastAPI (Python), Redis for state management|
-| Frontend       | React (Vite)                                |
-| Packaging      | Helm charts (custom deployment config)      |
-
-
----
-
 ## Grafana Dashboards (Kubernetes, API, Application Metrics)
 
 Prometheus scrapes metrics from both the Kubernetes cluster and the application. Grafana uses those metrics to populate custom dashboards that provide real-time observability.
@@ -110,7 +91,7 @@ Prometheus scrapes metrics from both the Kubernetes cluster and the application.
 
 ---
 
-**🔌 API Metrics**
+**API Metrics**
 
 ![image](https://github.com/user-attachments/assets/f93108f3-3f5d-4dab-9ac8-93ff9cfc038b)
 
@@ -121,7 +102,7 @@ Prometheus scrapes metrics from both the Kubernetes cluster and the application.
 
 ---
 
-**🎮 App Metrics**
+**App Metrics**
 
 ![image](https://github.com/user-attachments/assets/43890586-8dbd-4360-9ce9-a7b1eb0bbe98)
 
@@ -134,7 +115,7 @@ Prometheus scrapes metrics from both the Kubernetes cluster and the application.
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 This project runs locally on a Kubernetes cluster using KIND (Kubernetes IN Docker).
 
@@ -263,7 +244,7 @@ This secret allows Kubernetes to pull container images from ghcr.io.
 
 ---
 
-## 🧪 Testing Network Policies
+## Testing Network Policies
 
 This test demonstrates that frontend pods are restricted from accessing the internet and backend pods directly, validating that network policies are in effect.
 
@@ -303,7 +284,7 @@ curl google.com
 
 ---
 
-## 📚 References
+## Acknowledgements
 
 This project expanded upon concepts from [DevSecOps CI/CD Pipeline Implementation](https://www.youtube.com/watch?v=Ke_Wr5zPE0A&list=PLdpzxOOAlwvLm5lWlYctUnwaFRIO2Io_5&index=7)
 
