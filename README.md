@@ -14,11 +14,10 @@ Application Tiers:
 
 ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
 
-- GitHub Actions runs unit tests, linters, and vulnerability scans (via Trivy) on every push.
-- If checks pass, secure multi-stage distroless Docker images are built using the Dockerfiles I wrote for the frontend and backend.
-- Images are pushed to GitHub Container Registry (GHCR).
-- A script updates the Helm values.yaml file with the new image tags using yq and commits the change.
-- ArgoCD detects the change and automatically syncs the updated manifests to the local Kubernetes (KIND) cluster.
+- Validation: Executes unit tests and linting.
+- Security: Performs vulnerability scanning using Trivy.
+- Build/Publish: Builds images and publishes to GitHub Container Registry (GHCR).
+- Deployment: A custom Bash script updates Helm values.yaml image tags. ArgoCD monitors these changes to automatically synchronize manifests with the local Kubernetes (KIND) cluster.
 
 ---
 
@@ -49,7 +48,7 @@ Application Tiers:
 
 ## Observability
 
-Prometheus scrapes metrics from both the Kubernetes cluster and the application. Grafana uses those metrics to populate custom dashboards that provide real-time observability.
+The system features full-stack observability with Prometheus and Grafana.
 
 ---
 
