@@ -1,22 +1,8 @@
-## 📖 Table of Contents
-
-- [⚙️ DevSecOps CI/CD Pipeline](#️-devsecops-cicd-pipeline)
-- [🛠 TicTacToe DevSecOps Architecture](#-tictactoe-devsecops-architecture)
-- [🔐 Security Best Practices Implemented](#-security-best-practices-implemented)
-- [🧰 Tech Stack](#-tech-stack)
-- [📊 Grafana Dashboards (Kubernetes, API, Application Metrics)](#-grafana-dashboards-kubernetes-api-application-metrics)
-- [⚙️ Setup Instructions](#️-setup-instructions)
-- [🧪 Testing Network Policies](#-testing-network-policies)
-- [🚀 Future Improvements](#-future-improvements)
-- [📚 References](#-references)
-
----
-
-# DevSecOps Platform for TicTactoe
+# Overview
 ![TicTacToe](https://github.com/user-attachments/assets/893c2d7b-bbf1-4178-87b3-7ec82785288d)
 
 The goal of this project was to gain hands-on experience implementing real-world DevSecOps practices across the lifecycle of a containerized web application.
-
+  
 Starting with the basic frontend source code for a React-based TicTacToe game, I transformed it into a traditional three-tier architecture to support state persistence, scalability, and observability.
 
 Application Tiers:
@@ -53,7 +39,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## ⚙️ DevSecOps CI/CD Pipeline
+## CI/CD
 
 ![CI/CD Pipeline](https://github.com/user-attachments/assets/ed3452f3-0619-4edd-9570-0fed39cc3c1f)
 
@@ -65,7 +51,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## 🛠 TicTacToe DevSecOps Architecture
+## Technical Implementation
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/6a1ac8b5-6fad-4294-99c0-ed88b41db614)
 
@@ -78,7 +64,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## 🔐 Security Best Practices Implemented
+## Security
 
 - HTTPS/TLS termination with NGINX Ingress and Cert-Manager to encrypt traffic in transit.
 - Kubernetes Secrets used to manage sensitive values like the Redis password.
@@ -90,7 +76,7 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Area           | Tools/Tech Used                            |
 |----------------|---------------------------------------------|
@@ -107,13 +93,13 @@ This project simulates the tooling and workflows of a production-like DevSecOps 
 
 ---
 
-## 📊 Grafana Dashboards (Kubernetes, API, Application Metrics)
+## Grafana Dashboards (Kubernetes, API, Application Metrics)
 
 Prometheus scrapes metrics from both the Kubernetes cluster and the application. Grafana uses those metrics to populate custom dashboards that provide real-time observability.
 
 ---
 
-**📦 Infrastructure Metrics**
+**Infrastructure Metrics**
 
 ![image](https://github.com/user-attachments/assets/0909f021-0859-4f65-9a85-196b7f091f11)
 
@@ -311,39 +297,16 @@ curl google.com
 
 ---
 
-## 🚀 Future Improvements
-
-Enhancements that could further align with production-grade DevSecOps practices:
-
-- Transition from a local KIND cluster to a Cloud Native platform like EKS
-- Use Terraform to declaratively provision the project onto AWS
-- Encrypt Kubernetes Secrets at rest using a secrets manager to strengthen secret handling beyond base64-encoded Kubernetes Secrets. For example, using:
-  - HashiCorp Vault
-  - AWS KMS (Key Management Services)
+## Future Improvements
+* **Provisioning:** Utilize Terraform for Infrastructure-as-Code (IaC) on cloud providers like AWS (EKS).
+* **Secret Management:** Move from Kubernetes Secrets to external managers like HashiCorp Vault or AWS KMS for encryption at rest.
 
 ---
 
 ## 📚 References
 
-This project was originally based on the [DevSecOps CI/CD Pipeline Implementation](https://www.youtube.com/watch?v=Ke_Wr5zPE0A&list=PLdpzxOOAlwvLm5lWlYctUnwaFRIO2Io_5&index=7) YouTube tutorial, which provided the frontend and basic CI/CD skeleton.
+This project expanded upon concepts from [DevSecOps CI/CD Pipeline Implementation](https://www.youtube.com/watch?v=Ke_Wr5zPE0A&list=PLdpzxOOAlwvLm5lWlYctUnwaFRIO2Io_5&index=7)
 
-It was significantly expanded to include:
-
-- A full backend API with FastAPI and Redis for state management
-- Secure Docker builds using multi-stage and distroless images
-- CI/CD via GitHub Actions, including:
-    - Static code analysis
-    - Unit tests
-    - Trivy security scans
-- Kubernetes manifests refactored into Helm charts and deployed via ArgoCD
-- Security hardening with:
-    - HTTPS/TLS
-    - RBAC
-    - Kubernetes Secrets
-    - Pod Security Contexts
-    - Calico Network Policies
-- Full-stack observability with Prometheus and Grafana
-  
 ---
 
 
